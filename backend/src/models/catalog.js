@@ -1,4 +1,5 @@
 const dirTree = require('directory-tree');
+const { VIDEO_FILE_EXTENSIONS } = require('./enums');
 
 const TYPE = {
     DIRECTORY: 'directory',
@@ -13,7 +14,12 @@ const format = tree => {
         const name = show.name;
         const seasons = show.children.filter(directories).map(s => {
             const name = s.name;
-            const episodes = s.children.filter(files).map(e => ({ name: e.name, path: e.path }));
+            const episodes = s.children.filter(files).map(e => {
+                return {
+                    name: e.name,
+                    path: e.path
+                };
+            });
             return {
                 name,
                 episodes
@@ -29,7 +35,9 @@ const format = tree => {
     return shows;
 };
 const fromDir = directory => {
-    const tree = dirTree(directory);
+    const tree = dirTree(directory, {
+        extensions: new RegExp(`\.(${VIDEO_FILE_EXTENSIONS.join('|')})$`)
+    });
     return format(tree);
 };
 
