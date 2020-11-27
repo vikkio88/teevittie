@@ -1,12 +1,10 @@
-const { response } = require('../../libs/formatters');
+const { MEDIA_PATH } = process.env;
+const { response } = require('../formatters');
+const { fromDir } = require('../../models/catalog');
 
 const all = (req, res) => {
-    const catalog = [
-        { some: 'stuff' },
-        { some: 'stuff' },
-        { some: 'stuff' },
-    ];
-    return response(res, catalog);
+    const catalog = fromDir(MEDIA_PATH);
+    return response(res, catalog, { total: catalog.length });
 };
 
 module.exports = {
