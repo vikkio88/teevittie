@@ -1,4 +1,4 @@
-const { response } = require('../../libs/formatters');
+const { response } = require('../formatters');
 
 const pong = (req, res) => {
     return response(res, { pong: true, env: process.env.LABEL });
