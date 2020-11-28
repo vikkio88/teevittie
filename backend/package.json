@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "micro-dev -p 3001",
-    "start": "micro"
+    "start": "micro",
+    "test:folders": "node scripts/generateTestFolders.js",
+    "rm:test:folders": "node scripts/removeTestFolders.js"
   },
   "keywords": [],
   "author": "",
