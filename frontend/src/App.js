@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useStoreon } from 'storeon/react';
 
 import { Spinner, Error } from 'components/common';
+import { Show } from 'components/show/Show';
 
 const App = () => {
   const { dispatch, app: { isLoading, catalog, error } } = useStoreon('app');
@@ -16,6 +17,9 @@ const App = () => {
       <section>
         {isLoading && <Spinner />}
         {!isLoading && error && <Error>{error}</Error>}
+        {!isLoading && Array.isArray(catalog) && catalog.map(s => (
+          <Show key={s.id} {...s} />
+        ))}
       </section>
     </main>
   );
