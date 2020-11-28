@@ -1,19 +1,24 @@
-import api from './api';
+import { useEffect } from 'react';
+import { useStoreon } from 'storeon/react';
 
-function App() {
+import { Spinner, Error } from 'components/common';
+
+const App = () => {
+  const { dispatch, app: { isLoading, catalog, error } } = useStoreon('app');
+  useEffect(() => dispatch('loadCatalog'), []);
+
+  console.log(catalog);
   return (
     <main>
-      <h1>Tivitti</h1>
-      <button
-        onClick={async () => {
-          const resp = await api.catalog.all();
-          console.log(resp)
-        }}
-      >
-        Test
-      </button>
+      <header>
+        <h1 className="logo">Tivitti</h1>
+      </header>
+      <section>
+        {isLoading && <Spinner />}
+        {!isLoading && error && <Error>{error}</Error>}
+      </section>
     </main>
   );
-}
+};
 
 export default App;

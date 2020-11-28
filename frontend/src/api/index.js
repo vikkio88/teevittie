@@ -8,8 +8,7 @@ const xhr = axios.create({
 const api = {
     catalog: {
         async all() {
-            const resp = await xhr.get('api/catalog');
-            return resp.data;
+            return xhr.get('api/catalog');
         }
     }
 };
