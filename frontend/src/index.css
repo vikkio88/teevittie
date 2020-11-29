@@ -5,18 +5,28 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+}
+#root {
+  width: 100vw;
+  height: 100vh;
 }
 
 main {
+  flex:1;
   display: flex;
-  width: 100vw;
-  height: 100vh;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px;
 }
 
 header {
   margin-bottom: 20px;
+  width: 100%;
+}
+
+section {
+  width: 90vw;
+  min-height: 80vh;
 }

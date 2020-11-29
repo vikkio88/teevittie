@@ -1,27 +1,40 @@
 import { useEffect } from 'react';
 import { useStoreon } from 'storeon/react';
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import { Spinner, Error } from 'components/common';
-import { Show } from 'components/show/Show';
+import { Shows, Show } from 'components/pages';
 
 const App = () => {
-  const { dispatch, app: { isLoading, catalog, error } } = useStoreon('app');
+  const { dispatch, app: { isLoading, error } } = useStoreon('app');
   useEffect(() => dispatch('loadCatalog'), []);
 
-  console.log(catalog);
+  const hasError = !isLoading && Boolean(error);
+  const isReady = !isLoading && !hasError;
   return (
-    <main>
-      <header>
-        <h1 className="logo">Tivitti</h1>
-      </header>
-      <section>
-        {isLoading && <Spinner />}
-        {!isLoading && error && <Error>{error}</Error>}
-        {!isLoading && Array.isArray(catalog) && catalog.map(s => (
-          <Show key={s.id} {...s} />
-        ))}
-      </section>
-    </main>
+    <Router>
+      <main>
+        <header>
+          <Link to='/'><h1 className="logo" >Tivitti</h1></Link>
+        </header>
+        <section>
+          {isLoading && <Spinner />}
+          {hasError && <Error>{error}</Error>}
+          {isReady && (
+
+            <Switch>
+              <Route exact path='/' component={Shows} />
+              <Route exact path='/show/:id' component={Show} />
+              <Route path="*" component={() => (<Error>Link Error</Error>)} />
+            </Switch>
+          )}
+        </section>
+      </main>
+    </Router>
   );
 };
 
