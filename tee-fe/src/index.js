@@ -1,6 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, } from 'react-router-dom';
 import { StoreContext } from 'storeon/react';
+import { createRoot } from 'react-dom/client';
 
 import 'mini.css/dist/mini-dark.min.css';
 import './index.css';
@@ -8,12 +9,14 @@ import App from './App';
 import store from 'store';
 
 store.dispatch('bootstrap');
+const root = createRoot(document.getElementById("root"));
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <StoreContext.Provider value={store}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </StoreContext.Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

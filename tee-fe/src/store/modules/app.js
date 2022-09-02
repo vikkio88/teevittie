@@ -3,6 +3,7 @@ import api from "api";
 const initialState = {
     isLoading: false,
     catalog: null,
+    history: null,
     error: false
 };
 
@@ -16,7 +17,7 @@ export default store => {
         try {
             const resp = await api.catalog.all();
             const data = resp.data;
-            store.dispatch('catalogLoaded', data.payload);
+            store.dispatch('catalogLoaded', data.catalog);
         } catch (error) {
             store.dispatch('error', 'Loading Catalog Failed');
         }
