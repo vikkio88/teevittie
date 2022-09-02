@@ -1,21 +1,36 @@
-if (process.env.NODE_ENV === 'development') require('dotenv').config();
-const cors = require('micro-cors')();
-const { send } = require('micro');
-const { router, get, post, withNamespace } = require('microrouter');
+const catalogFolder = process.argv.slice(2)[0];
+const dirExists = require('fs').existsSync(catalogFolder);
+if (!Boolean(catalogFolder) || !dirExists) throw Error(`Tee needs a valid catalog folder, passed: ${catalogFolder}`);
 
-const { misc, catalog } = require('./actions');
 
-const api = withNamespace('/api');
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const catalog = require('./models/catalog');
+const history = require('./models/history');
 
-module.exports = cors(
-    router(
-        api(
-            get('/ping', misc.pong),
-            get('/catalog', catalog.all),
-        ),
-        get('/', misc.fallback),
+app.disable('x-powered-by');
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-        get('/*', (req, res) => send(res, 404)),
-        post('/*', (req, res) => send(res, 404))
-    )
-);
+
+
+app.get('/ping', (_, res) => res.json({ pong: 1 }));
+app.get('/catalog', (_, res) => res.json({ catalog: catalog.fromDir(catalogFolder), history: history.fetch(catalogFolder) }));
+
+app.post('/history', (req, res) => {
+    const { body } = req;
+    res.json({ history: history.log(body) });
+});
+
+app.put('/history', (_, res) => {
+    history.persist(catalogFolder);
+    res.sendStatus(200);
+});
+app.delete('/history', (_, res) => {
+    history.del(catalogFolder);
+    res.sendStatus(200);
+});
+
+app.listen(process.env.PORT || 3001);
