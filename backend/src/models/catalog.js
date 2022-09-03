@@ -46,9 +46,24 @@ const fromDir = directory => {
     const tree = dirTree(directory, {
         extensions: new RegExp(`\.(${VIDEO_FILE_EXTENSIONS.join('|')})$`)
     });
-    return format(tree);
+    const formatted = format(tree);
+    for (let show of formatted) {
+        const showId = show.id;
+        for (let season of show.seasons) {
+            const seasonId = season.id
+            for (let episode of season.episodes) {
+                const episodeId = episode.id;
+                indexedCatalog[`${showId}.${seasonId}.${episodeId}`] = episode.path;
+            }
+        }
+    }
+
+    return formatted;
 };
 
+let indexedCatalog = {};
+
 module.exports = {
-    fromDir
+    fromDir,
+    indexedCatalog
 };

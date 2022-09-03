@@ -25,11 +25,11 @@ for (let i = 0; i < shows; i++) {
         const episodes = randomInt(1, 4);
         console.log(`       generating ${episodes} episodes`);
         for (let k = 0; k < episodes; k++) {
-            const episode = `Episode ${randomString()} s0${j + 1}e${k + 1}.avi`;
+            const episode = `Episode ${randomString()} s0${j + 1}e${k + 1}.mp4`;
             console.log(`       generating episode: ${episode}`);
             const filepath = path.join(dir, show, season, episode);
             console.log('FILE:', filepath);
-            fs.closeSync(fs.openSync(filepath, 'w'));
+            fs.copyFileSync('scripts/example.mp4', filepath);
         }
     }
 }

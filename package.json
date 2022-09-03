@@ -1,0 +1,23 @@
+{
+  "name": "teevittie",
+  "version": "1.0.0",
+  "description": "teevittie",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev -- ./tmp\" \"cd frontend && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikkio88/teevittie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vikkio88/teevittie/issues"
+  },
+  "homepage": "https://github.com/vikkio88/teevittie#readme",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
