@@ -1,0 +1,9 @@
+.Show-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.Show-seasonsWrapper {
+    display: flex;
+    flex-direction: column;
+}

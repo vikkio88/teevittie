@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import { Spinner, Error } from 'components/common';
-import { Shows, Show } from 'components/pages';
+import { Shows, Show, Episode } from 'components/pages';
 
 const App = () => {
   const { dispatch, app: { isLoading, error } } = useStoreon('app');
@@ -26,6 +26,7 @@ const App = () => {
             <Routes>
               <Route path='/' element={<Shows />} />
               <Route path='/show/:id' element={<Show />} />
+              <Route path='/episode/:id' element={<Episode />} />
               <Route path="*" element={<Error>Link Error</Error>} />
             </Routes>
         )}

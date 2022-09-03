@@ -1,9 +1,11 @@
 const path = require('path');
+const fs = require('fs');
 const { indexedCatalog } = require('./catalog');
 
 const stream = (req, res) => {
     const chunkSize = 3000000;
-    const { id } = req.params
+    const { id } = req.params;
+    console.log(id, indexedCatalog);
     const filePath = indexedCatalog[id];
     console.log(`path: ${filePath}`);
 

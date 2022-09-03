@@ -1,4 +1,5 @@
-import './ShowItem.css';
+import './styles/ShowItem.css';
+
 export const ShowItem = ({ name, seasons, onView }) => {
     const seasonsCount = seasons.length;
     return (

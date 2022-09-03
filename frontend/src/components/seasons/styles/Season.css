@@ -1,0 +1,29 @@
+.SeasonHead {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.SeasonHead:hover {
+    background-color: #d3d3d3;
+    color: #333;
+}
+
+.Episodes {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+}
+
+.Episodes-active {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
