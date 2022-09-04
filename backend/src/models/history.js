@@ -1,32 +1,19 @@
-const fs = require('fs');
-const HISTORY_FILE = 'TEE_HISTORY.json';
-
+const db = require('../db').getDb();
 const emptyHistory = { watched: {} };
 
-let history = {};
-
 module.exports = {
-    fetch: catalogFolder => {
-        if (fs.existsSync(`${catalogFolder}/${HISTORY_FILE}`)) {
-            try {
-                history = JSON.parse(fs.readFileSync(`${catalogFolder}/${HISTORY_FILE}`));
-            } catch (err) {
-                history = { ...emptyHistory };
-            }
-            return history;
+    fetch: () => {
+        if (db.data.history) {
+            return db.data.history;
         }
-        history = { ...emptyHistory };
-        return history;
+        db.data.history = { ...emptyHistory };
+        return db.data.history;
     },
-    log: ({ watched, time = null, finished = false }) => {
-        history.watched[watched] = { time, finished };
-        return history;
+    log: ({ id, time = null, finished = false }) => {
+        db.data.history.watched[id] = { time, finished };
+        return db.data.history;
     },
-    persist: catalogFolder => fs.writeFileSync(`${catalogFolder}/${HISTORY_FILE}`, JSON.stringify(history, null, 2)),
-    del: catalogFolder => {
-        if (fs.existsSync(`${catalogFolder}/${HISTORY_FILE}`)) {
-            fs.rmSync(`${catalogFolder}/${HISTORY_FILE}`);
-        }
-        history = { ...emptyHistory };
+    del: () => {
+        db.data.history = {};
     }
 };
