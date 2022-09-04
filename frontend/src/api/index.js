@@ -10,6 +10,11 @@ const api = {
         async all() {
             return xhr.get('/catalog');
         }
+    },
+    history: {
+        async sync({ id, time = 0, finished = false }) {
+            return xhr.post('/history', { id, time, finished });
+        }
     }
 };
 

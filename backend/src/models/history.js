@@ -10,6 +10,8 @@ module.exports = {
         return db.data.history;
     },
     log: ({ id, time = null, finished = false }) => {
+        if (!Boolean(id)) return db.data.history;
+        
         db.data.history.watched[id] = { time, finished };
         return db.data.history;
     },

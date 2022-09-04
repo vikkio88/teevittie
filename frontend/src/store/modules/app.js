@@ -1,4 +1,5 @@
 import api from "api";
+import a from "../actions"
 
 const initialState = {
     isLoading: false,
@@ -7,23 +8,25 @@ const initialState = {
     error: false
 };
 
+
+
 export default store => {
-    store.on('@init', () => {
+    store.on(a._INIT, () => {
         return { app: { ...initialState } };
     });
 
-    store.on('loadCatalog', async ({ app }) => {
-        store.dispatch('startLoading');
+    store.on(a.INIT.LOAD, async () => {
+        store.dispatch(a.LOADING.STARTED);
         try {
             const resp = await api.catalog.all();
             const data = resp.data;
-            store.dispatch('catalogLoaded', data.catalog);
+            store.dispatch(a.INIT.LOADED, data);
         } catch (error) {
-            store.dispatch('error', 'Loading Catalog Failed');
+            store.dispatch(a.ERROR, 'Loading Catalog Failed');
         }
     });
 
-    store.on('error', ({ app }, error) => {
+    store.on(a.ERROR, ({ app }, error) => {
         return {
             app: {
                 ...app,
@@ -33,7 +36,18 @@ export default store => {
         };
     });
 
-    store.on('catalogLoaded', ({ app }, catalog) => {
+    store.on(a.INIT.LOADED, ({ app }, { catalog, history }) => {
+        return {
+            app: {
+                ...app,
+                isLoading: false,
+                catalog,
+                history
+            }
+        };
+    });
+
+    store.on(a.CATALOG.LOADED, ({ app }, catalog) => {
         return {
             app: {
                 ...app,
@@ -42,11 +56,26 @@ export default store => {
             }
         };
     });
-    store.on('startLoading', ({ app }) => {
+    store.on(a.LOADING.STARTED, ({ app }) => {
         return {
             app: {
                 ...app,
                 isLoading: true
+            }
+        };
+    });
+
+    store.on(a.HISTORY.SYNC, async (_, dataToSync) => {
+        const resp = await api.history.sync(dataToSync);
+        const data = resp.data;
+        store.dispatch(a.HISTORY.LOADED, data)
+    });
+
+    store.on(a.HISTORY.LOADED, ({ app }, history) => {
+        return {
+            app: {
+                ...app,
+                history
             }
         };
     });
