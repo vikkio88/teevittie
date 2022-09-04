@@ -1,7 +1,7 @@
 const fs = require('fs');
 const HISTORY_FILE = 'TEE_HISTORY.json';
 
-const emptyHistory = { watched: [] };
+const emptyHistory = { watched: {} };
 
 let history = {};
 
@@ -18,8 +18,8 @@ module.exports = {
         history = { ...emptyHistory };
         return history;
     },
-    log: ({ watched }) => {
-        history.watched.push(watched);
+    log: ({ watched, time = null, finished = false }) => {
+        history.watched[watched] = { time, finished };
         return history;
     },
     persist: catalogFolder => fs.writeFileSync(`${catalogFolder}/${HISTORY_FILE}`, JSON.stringify(history, null, 2)),

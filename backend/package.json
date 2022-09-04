@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon src/index.js ./tmp",
     "test:folders": "node scripts/generateTestFolders.js",
     "rm:test:folders": "node scripts/removeTestFolders.js"
   },

@@ -1,10 +1,10 @@
 import './styles/Episode.css';
 const { REACT_APP_API_URL } = process.env;
 
-const Episode = ({videoId}) => {
+const Episode = ({ videoId }) => {
     return (
         <div className="Episode-wrapper">
-            <video width="100%" controls  autoplay>
+            <video width="100%" controls>
                 <source src={`${REACT_APP_API_URL}/stream/${videoId}`} type="video/mp4" />
             </video>
 

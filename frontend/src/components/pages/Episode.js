@@ -4,11 +4,9 @@ import { useStoreon } from 'storeon/react';
 
 export default () => {
     const { id } = useParams();
-
-    console.log(id);
     return (
         <>
-            <Episode />
+            <Episode videoId={id} />
         </>
     );
 };

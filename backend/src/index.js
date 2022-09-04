@@ -39,4 +39,23 @@ app.delete('/history', (_, res) => {
     res.sendStatus(200);
 });
 
-app.listen(process.env.PORT || 3001);
+app.post('/shutdown', (_, res) => {
+    console.log('received shutdown request');
+    res.sendStatus(202);
+    process.exit(0);
+});
+
+const server = app.listen(process.env.PORT || 3001);
+const shutDown = () => {
+    console.log('');
+    console.log('Received kill signal, shutting down gracefully');
+    server.close(() => {
+        console.log('- closed out remaining connections');
+        process.exit(0);
+    });
+};
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);
+process.on('uncaughtException', exception => {
+    console.error('uncaughtException', exception);
+});
