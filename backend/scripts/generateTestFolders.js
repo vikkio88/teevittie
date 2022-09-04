@@ -3,7 +3,7 @@ const path = require('path');
 const randomString = () => Math.random().toString(36).substring(7);
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-const dir = './tmp';
+const dir = process.argv.slice(2) || './tmp';
 
 if (fs.existsSync(dir)) {
     fs.rmdirSync(dir, { recursive: true });

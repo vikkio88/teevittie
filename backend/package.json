@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js ./tmp",
+    "test": "node bin/test.js",
+    "test:watch": "node bin/test.js --watch",
     "test:folders": "node scripts/generateTestFolders.js",
     "rm:test:folders": "node scripts/removeTestFolders.js"
   },
@@ -19,6 +21,9 @@
     "tiny-hashes": "^1.0.1"
   },
   "devDependencies": {
+    "@japa/expect": "^2.0.0",
+    "@japa/runner": "^2.1.1",
+    "@japa/spec-reporter": "^1.2.0",
     "nodemon": "^2.0.19"
   }
 }
