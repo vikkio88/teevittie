@@ -1,19 +1,12 @@
 import { useEffect } from 'react';
 import './styles/Episode.css';
 const { REACT_APP_API_URL } = process.env;
-// const timeUpdateHandler = ({ target }) => {
-//     console.log('time update:', target.currentTime);
-// };
+const UPDATE_INTERVAL = 5 * 1000;
 
 const Episode = ({ videoId }) => {
-    // useEffect(() => {
-    //     const video = document.getElementById('video');
-    //     video.addEventListener('timeupdate', timeUpdateHandler);
-    //     return () => video.removeEventListener('timeupdate', timeUpdateHandler);
-    // });
     useEffect(() => {
         const video = document.getElementById('video');
-        const interval = setInterval(() => console.log(video.currentTime), 5000);
+        const interval = setInterval(() => console.log(video.currentTime), UPDATE_INTERVAL);
         return () => clearInterval(interval);
     });
     return (
