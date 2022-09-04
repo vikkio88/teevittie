@@ -1,5 +1,6 @@
 const dirTree = require('directory-tree');
 const sha1 = require('tiny-hashes/sha1');
+const db = require('../db').getDb();
 
 const { VIDEO_FILE_EXTENSIONS } = require('./enums');
 
@@ -52,29 +53,26 @@ const format = tree => {
         const name = show.name;
         // here could add other episodes if there are any in the folder itself
         formatted.push({
-            showId, name, seasons
+            id: showId, name, seasons
         });
     }
 
     return { formatted, indexed };
 };
 const fromDir = directory => {
+    // here I might add an expiry date
+    if (Boolean(db.data.catalog)) {
+        return db.data.catalog;
+    }
     const tree = dirTree(directory, {
         extensions: new RegExp(`\.(${VIDEO_FILE_EXTENSIONS.join('|')})$`)
     });
     const { formatted, indexed } = format(tree);
-    for (let show of formatted) {
-        const showId = show.id;
-        for (let season of show.seasons) {
-            const seasonId = season.id
-            for (let episode of season.episodes) {
-                const episodeId = episode.id;
+    db.data.catalog = formatted;
+    db.data.indexed = indexed;
+    // here add the date was indexed
 
-            }
-        }
-    }
-
-    return { formatted, indexed };
+    return db.data.catalog;
 };
 
 module.exports = {
