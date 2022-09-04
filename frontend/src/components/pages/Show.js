@@ -6,7 +6,7 @@ import Show from 'components/show/Show';
 export default () => {
     const { id } = useParams();
     const { app: { catalog } } = useStoreon('app');
-    if (!Boolean(catalog)) return <Navigate to='/' />;
+    if (!Boolean(catalog)) return <span />;
 
     const show = catalog.find(s => s.id === id);
     if (!Boolean(show)) return <Navigate to='/' />;
