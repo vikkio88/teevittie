@@ -5,12 +5,18 @@ import './styles/Episode.css';
 
 const { REACT_APP_API_URL } = process.env;
 const UPDATE_INTERVAL = 5 * 1000;
+const FINISHED_LEEWAY = .7;
 
 const Episode = ({ videoId }) => {
     const { dispatch } = useStoreon();
     useEffect(() => {
         const video = document.getElementById('video');
-        const interval = setInterval(() => dispatch(a.HISTORY.SYNC, { time: video.currentTime, id: videoId }), UPDATE_INTERVAL);
+        const interval = setInterval(() => {
+            const { currentTime, duration, paused } = video;
+            const isFinished = currentTime >= duration * FINISHED_LEEWAY;
+            if (paused) return;
+            dispatch(a.HISTORY.SYNC, { time: video.currentTime, id: videoId, finished: isFinished });
+        }, UPDATE_INTERVAL);
         return () => clearInterval(interval);
     }, [videoId]);
     return (
