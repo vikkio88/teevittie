@@ -3,8 +3,8 @@ import { useStoreon } from 'storeon/react';
 import {
   Routes,
   Route,
-  Link
 } from "react-router-dom";
+import { Header } from 'components/layout';
 import { Spinner, Error } from 'components/common';
 import { Shows, Show, Episode } from 'components/pages';
 
@@ -18,9 +18,7 @@ const App = () => {
   const isReady = !isLoading && !hasError;
   return (
     <main>
-      <header>
-        <Link to='/'><h1 className="logo" >Tivitti</h1></Link>
-      </header>
+      <Header />
       <section>
         {isLoading && <Spinner />}
         {!isLoading && hasError && <Error>{error}</Error>}

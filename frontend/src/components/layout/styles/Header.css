@@ -1,0 +1,16 @@
+header {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header>.credits {
+    margin-right: 10px;
+}
+header>.credits a{
+    text-decoration: none;
+}
+

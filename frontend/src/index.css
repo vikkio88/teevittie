@@ -19,13 +19,8 @@ main {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+ 
 }
-
-header {
-  margin-bottom: 20px;
-  width: 100%;
-}
-
 section {
   width: 90vw;
   min-height: 80vh;
