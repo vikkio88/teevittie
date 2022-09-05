@@ -1,3 +1,4 @@
+const { PORT = 3001 } = process.env;
 const catalogFolder = process.argv.slice(2)[0];
 const dirExists = require('fs').existsSync(catalogFolder);
 if (!Boolean(catalogFolder) || !dirExists) throw Error(`Tee needs a valid catalog folder, passed: ${catalogFolder}`);
@@ -27,6 +28,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+app.use('/', express.static(__dirname + '/../build'));
+app.use('/show/*', express.static(__dirname + '/../build'));
+app.use('/episode/*', express.static(__dirname + '/../build'));
 
 app.get('/ping', (_, res) => res.json({ pong: 1 }));
 app.get('/catalog', (_, res) => {
@@ -55,7 +59,7 @@ app.post('/shutdown', (_, res) => {
     process.exit(0);
 });
 
-const server = app.listen(process.env.PORT || 3001);
+const server = app.listen(PORT || 3001);
 const shutDown = () => {
     console.log('');
     log('Received kill signal, shutting down gracefully');
