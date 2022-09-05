@@ -6,6 +6,7 @@ import en from 'javascript-time-ago/locale/en.json';
 import a from 'store/actions';
 import './styles/Episode.css';
 import { secondsToHHMMSS } from 'libs/formatters';
+import { Link } from 'react-router-dom';
 
 TimeAgo.addDefaultLocale(en);
 const { REACT_APP_API_URL } = process.env;
@@ -42,7 +43,6 @@ const continueWatching = time => {
 };
 
 const Episode = ({ videoId, next, watchedHistory }) => {
-    console.log({ next });
     const { dispatch } = useStoreon();
     const [watched, setWatched] = useState(null); //{ time: 0, isFinished: false, timestamp, justFinished }
     useEffect(() => {
@@ -59,10 +59,18 @@ const Episode = ({ videoId, next, watchedHistory }) => {
                     Finished {watched?.timestamp ? (new TimeAgo()).format(watched.timestamp) : ''}
                 </div>
             )}
-            {/* 
-            this is beautiful but needs a bit more thinking on how to get the next Id, maybe comes with the catalog
-            {watched?.justFinished && <div className="fullRow"><button>Next Episode</button></div>} 
-            */}
+
+            {watched?.justFinished && (
+                <div className="fullRow">
+                    {Boolean(next) && <Link to={`/episode/${next}`}>Next Episode</Link>}
+                    {!Boolean(next) && <h3>No more Episodes</h3>}
+                    {/* 
+                    I need to find and merge the seasons too so I can go next from Episode of a season to the next
+                    maybe it is as easy as moving the temporary lastEpisode outside the season
+                     */}
+                </div>
+            )}
+
             {watched?.time && !watched?.isFinished && <div className="fullRow">
                 <button onClick={() => continueWatching(0)}>Restart</button>
                 <button onClick={() => continueWatching(watched.time)}>Continue from {secondsToHHMMSS(watched.time)}</button>
