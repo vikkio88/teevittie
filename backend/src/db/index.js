@@ -28,7 +28,14 @@ class Db {
 
 const init = filePath => {
     db = new Db(path.join(filePath, TEE_FOLDER_DB_NAME));
-}
+    db.data = { ...emptySchema };
+};
+
+const emptySchema = {
+    catalog: null,
+    seasonsMap: null,
+    history: null
+};
 
 
 module.exports = {
@@ -40,4 +47,4 @@ module.exports = {
         }
         return db;
     }
-}
+};

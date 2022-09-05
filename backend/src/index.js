@@ -3,10 +3,14 @@ const dirExists = require('fs').existsSync(catalogFolder);
 if (!Boolean(catalogFolder) || !dirExists) throw Error(`Tee needs a valid catalog folder, passed: ${catalogFolder}`);
 const db = require('./db').getDb(catalogFolder);
 
-const DB_PERSIST_INTERVAL = 60 * 1000;
+// every 5 Minutes
+const DB_PERSIST_INTERVAL = 5 * 60 * 1000;
+
+const { date } = require('./libs/formatters');
+const log = message => console.log(`${date()} - ${message}`);
 
 const persistInterval = setInterval(() => {
-    console.log(`\t*** Saving Db to file...`);
+    log(`\t*** Saving Db to file...`);
     db.write();
 }, DB_PERSIST_INTERVAL);
 
@@ -16,7 +20,6 @@ const cors = require('cors');
 const catalogRepo = require('./models/catalog');
 const historyRepo = require('./models/history');
 const stream = require('./models/stream');
-const { clearInterval } = require('timers');
 
 app.disable('x-powered-by');
 app.use(cors());
@@ -27,9 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/ping', (_, res) => res.json({ pong: 1 }));
 app.get('/catalog', (_, res) => {
-    const catalog = catalogRepo.fromDir(catalogFolder);
     const history = historyRepo.fetch();
-    res.json({ catalog, history });
+    const { catalog, seasonsMap } = catalogRepo.fromDir(catalogFolder);
+    res.json({ catalog, seasonsMap, history });
 });
 
 app.get('/stream/:id', stream);
@@ -45,7 +48,7 @@ app.delete('/history', (_, res) => {
 });
 
 app.post('/shutdown', (_, res) => {
-    console.log('received shutdown request');
+    log('received shutdown request');
     res.sendStatus(202);
     clearInterval(persistInterval);
     db.write();
@@ -55,12 +58,12 @@ app.post('/shutdown', (_, res) => {
 const server = app.listen(process.env.PORT || 3001);
 const shutDown = () => {
     console.log('');
-    console.log('Received kill signal, shutting down gracefully');
-    console.log(`\t*** Saving Db to file...`);
+    log('Received kill signal, shutting down gracefully');
+    log(`\t*** Saving Db to file...`);
     clearInterval(persistInterval);
     db.write();
     server.close(() => {
-        console.log('- closed out remaining connections');
+        log('- closed out remaining connections');
         process.exit(0);
     });
 };
@@ -68,4 +71,5 @@ process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
 process.on('uncaughtException', exception => {
     console.error('uncaughtException', exception);
+    log(`Uncaught Exception`);
 });

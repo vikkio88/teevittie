@@ -1,6 +1,6 @@
 const { test } = require('@japa/runner');
 
-const { format } = require('../src/models/catalog');
+const format = require('../src/libs/treeFormat');
 
 const treeExample = {
   children: [
@@ -34,14 +34,15 @@ test.group('Catalog Generation', () => {
           name: 'SomeNotEmptyFolder', type: 'directory', children: [
             {
               name: 'Season1', type: 'directory', children: [
-                { name: 'Episode 1', path: 'some/file/path', type: 'file' }
+                { name: 'Episode 1', path: 'some/file/path', type: 'file' },
+                { name: 'Episode 2', path: 'some/file/path', type: 'file' }
               ]
             }
           ]
         },
       ]
     };
-    const { formatted, indexed } = format(treeExample);
+    const { formatted, indexed, seasonsMap } = format(treeExample);
 
     expect(formatted.length).toBeGreaterThan(0);
     expect(formatted[0].name).toBe('SomeNotEmptyFolder');
@@ -54,6 +55,11 @@ test.group('Catalog Generation', () => {
     expect(Object.keys(indexed)).toContain(formatted[0].seasons[0].episodes[0].fullId);
     expect(indexed[formatted[0].seasons[0].episodes[0].fullId]).toBe(formatted[0].seasons[0].episodes[0].path);
 
+    expect(seasonsMap).not.toBe(null);
+    expect(seasonsMap[formatted[0].id]).not.toBe(null);
+    expect(seasonsMap[formatted[0].id][formatted[0].seasons[0].id]).not.toBe(null);
+    expect(seasonsMap[formatted[0].id][formatted[0].seasons[0].id][formatted[0].seasons[0].episodes[0].fullId]).toBe(formatted[0].seasons[0].episodes[1].fullId);
+    expect(seasonsMap[formatted[0].id][formatted[0].seasons[0].id][formatted[0].seasons[0].episodes[1].fullId]).toBe(null);
   });
 
 });

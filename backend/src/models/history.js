@@ -1,3 +1,5 @@
+const { date } = require('../libs/formatters');
+
 const db = require('../db').getDb();
 const emptyHistory = { watched: {} };
 
@@ -11,8 +13,8 @@ module.exports = {
     },
     log: ({ id, time = null, finished = false }) => {
         if (!Boolean(id)) return db.data.history;
-        
-        db.data.history.watched[id] = { time, finished };
+
+        db.data.history.watched[id] = { time, finished, timestamp: date(), };
         return db.data.history;
     },
     del: () => {
