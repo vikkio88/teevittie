@@ -6,15 +6,16 @@ import Show from 'components/show/Show';
 
 export default () => {
     const { id } = useParams();
-    const { app: { catalog } } = useStoreon('app');
-    if (!Boolean(catalog)) return <Spinner />;
+    const { app: { catalog, history } } = useStoreon('app');
+    if (!Boolean(catalog) || !Boolean(history)) return <Spinner />;
 
     const show = catalog.find(s => s.id === id);
     if (!Boolean(show)) return <Navigate to='/' />;
 
     return (
         <>
-            <Show {...show} />
+            {/* watchedHistory is a bit drilly, could merge the data on the BE side maybe */}
+            <Show {...show} watchedHistory={history.watched} />
         </>
     );
 };

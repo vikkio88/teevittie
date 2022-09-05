@@ -1,4 +1,4 @@
-.EpisodeItem-wrapper{
+.EpisodeItem-wrapper {
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -10,6 +10,7 @@
     margin-bottom: 5px;
 }
 
-.EpisodeItem-watched {
-    opacity: .8;
-} 
+.watched {
+    opacity: .5;
+    border: solid 1px #d3d3d3;
+}

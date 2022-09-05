@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useStoreon } from 'storeon/react';
 import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en.json';
-
 import a from 'store/actions';
 import './styles/Episode.css';
 import { secondsToHHMMSS } from 'libs/formatters';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-TimeAgo.addDefaultLocale(en);
 const { REACT_APP_API_URL } = process.env;
 const UPDATE_INTERVAL = 5 * 1000;
 const FINISHED_LEEWAY = .7;
@@ -44,6 +41,7 @@ const continueWatching = time => {
 
 const Episode = ({ videoId, next, watchedHistory }) => {
     const { dispatch } = useStoreon();
+    const nextEpisode = () => window.location.href = `/episode/${next}`;
     const [watched, setWatched] = useState(null); //{ time: 0, isFinished: false, timestamp, justFinished }
     useEffect(() => {
         const video = document.getElementById('video');
@@ -56,13 +54,13 @@ const Episode = ({ videoId, next, watchedHistory }) => {
             {watched?.isFinished && (
                 <div className="fullRow">
                     <button onClick={() => continueWatching(0)}>Reset</button>
-                    Finished {watched?.timestamp ? (new TimeAgo()).format(watched.timestamp) : ''}
+                    Watched {watched?.timestamp ? (new TimeAgo()).format(watched.timestamp) : ''}
                 </div>
             )}
 
             {watched?.justFinished && (
                 <div className="fullRow">
-                    {Boolean(next) && <Link to={`/episode/${next}`}>Next Episode</Link>}
+                    {Boolean(next) && <button onClick={nextEpisode}>Next Episode</button>}
                     {!Boolean(next) && <h3>No more Episodes</h3>}
                     {/* 
                     I need to find and merge the seasons too so I can go next from Episode of a season to the next
