@@ -8,7 +8,6 @@ const Show = ({ id, name, seasons }) => {
                 {name}
             </h3>
             <div className='Show-seasonsWrapper'>
-
             {seasons.map((s, i) => <Season key={i} {...s} showId={id} />)}
             </div>
         </div>

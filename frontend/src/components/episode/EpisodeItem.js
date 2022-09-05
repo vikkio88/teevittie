@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import './styles/EpisodeItem.css';
 
-const EpisodeItem = ({ name, showId, seasonId, id }) => {
+const EpisodeItem = ({ name, fullId }) => {
     return (
         <div className="EpisodeItem-wrapper">
             {name}
-            <Link to={`/episode/${showId}.${seasonId}.${id}`}>Watch</Link>
+            <Link to={`/episode/${fullId}`}>Watch</Link>
         </div>
     );
 };

@@ -5,6 +5,7 @@ const initialState = {
     isLoading: false,
     catalog: null,
     history: null,
+    seasonsMap: null,
     error: false
 };
 
@@ -36,13 +37,14 @@ export default store => {
         };
     });
 
-    store.on(a.INIT.LOADED, ({ app }, { catalog, history }) => {
+    store.on(a.INIT.LOADED, ({ app }, { catalog, history, seasonsMap }) => {
         return {
             app: {
                 ...app,
                 isLoading: false,
                 catalog,
-                history
+                history,
+                seasonsMap
             }
         };
     });
