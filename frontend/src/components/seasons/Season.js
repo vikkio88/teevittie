@@ -3,7 +3,7 @@ import EpisodeItem from 'components/episode/EpisodeItem';
 import './styles/Season.css';
 
 
-const Season = ({ name, episodes, watchedHistory }) => {
+const Season = ({ name, episodes, watchedHistory = {} }) => {
     const [open, setOpen] = useState(false);
     return (
         <>

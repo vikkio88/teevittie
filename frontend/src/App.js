@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { Header } from 'components/layout';
 import { Spinner, Error } from 'components/common';
-import { Shows, Show, Episode } from 'components/pages';
+import { Shows, Show, Episode } from 'pages';
 
 import a from "store/actions";
 

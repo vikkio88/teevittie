@@ -1,8 +1,10 @@
 .SeasonHead {
     background-color: #333;
+    border: solid 1px #333;
     color: #fff;
     cursor: pointer;
     padding: 18px;
+    margin-bottom: 10px;
     width: 100%;
     border: none;
     text-align: left;
@@ -12,8 +14,8 @@
 }
 
 .SeasonHead:hover {
-    background-color: #d3d3d3;
-    color: #333;
+    opacity: .7;
+    border: 1px solid #fff;;
 }
 
 .Episodes {

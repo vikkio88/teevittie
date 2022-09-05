@@ -1,10 +1,10 @@
 import { useStoreon } from 'storeon/react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { ShowItem } from 'components/show/ShowItem';
 
 export default () => {
     const { app: { catalog } } = useStoreon('app');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     return (
         <>
             <h1>Shows</h1>
