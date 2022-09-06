@@ -4,9 +4,8 @@ import TimeAgo from 'javascript-time-ago';
 import a from 'store/actions';
 import './styles/Episode.css';
 import { secondsToHHMMSS } from 'libs/formatters';
-import { useNavigate } from 'react-router-dom';
+import api from 'api';
 
-const { REACT_APP_API_URL } = process.env;
 const UPDATE_INTERVAL = 5 * 1000;
 const FINISHED_LEEWAY = .7;
 
@@ -74,7 +73,7 @@ const Episode = ({ videoId, next, watchedHistory }) => {
                 <button onClick={() => continueWatching(watched.time)}>Continue from {secondsToHHMMSS(watched.time)}</button>
             </div>}
             <video id="video" width="80%" controls onPlay={playPauseIntercept(setWatched)}>
-                <source src={`${REACT_APP_API_URL}/stream/${videoId}`} type="video/mp4" />
+                <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
             </video>
 
         </div>

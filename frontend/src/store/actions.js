@@ -1,4 +1,4 @@
-export default {
+const actions = {
     _INIT: '@init',
     INIT: {
         LOAD: 'initLoad',
@@ -17,4 +17,6 @@ export default {
         FINISHED: 'loadingFinished',
     },
     ERROR: 'error',
-}
+};
+
+export default actions;
