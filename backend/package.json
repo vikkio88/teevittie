@@ -1,20 +1,28 @@
 {
-  "name": "teevittie-backend",
-  "version": "1.0.0",
-  "description": "",
+  "name": "teevittie",
+  "version": "0.0.1",
+  "description": "your personal streaming service in a folder",
+  "bin": "src/index.js",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js ./tmp",
+    "dev:f": "nodemon src/index.js",
     "test": "node bin/test.js",
     "test:watch": "node bin/test.js --watch",
     "test:folders": "node scripts/generateTestFolders.js",
     "rm:test:folders": "node scripts/removeTestFolders.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "video streaming",
+    "netflix-like",
+    "folder video streaming",
+    "spa"
+  ],
+  "author": "Vincenzo Ciaccio <vincenzo.ciaccio@gmail.com>",
+  "license": "MIT",
   "dependencies": {
+    "address": "^1.2.0",
     "cors": "^2.8.5",
     "directory-tree": "^2.2.5",
     "express": "^4.18.1",

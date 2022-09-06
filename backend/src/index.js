@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 const { PORT = 3001 } = process.env;
+
 const catalogFolder = process.argv.slice(2)[0];
 const dirExists = require('fs').existsSync(catalogFolder);
 if (!Boolean(catalogFolder) || !dirExists) throw Error(`Tee needs a valid catalog folder, passed: ${catalogFolder}`);
@@ -27,31 +30,33 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use('/', express.static(__dirname + '/../build'));
 app.use('/show/*', express.static(__dirname + '/../build'));
 app.use('/episode/*', express.static(__dirname + '/../build'));
 
-app.get('/ping', (_, res) => res.json({ pong: 1 }));
-app.get('/catalog', (_, res) => {
+const api = express.Router();
+
+
+api.get('/ping', (_, res) => res.json({ pong: 1 }));
+api.get('/catalog', (_, res) => {
     const history = historyRepo.fetch();
     const { catalog, seasonsMap } = catalogRepo.fromDir(catalogFolder);
     res.json({ catalog, seasonsMap, history });
 });
 
-app.get('/stream/:id', stream);
+api.get('/stream/:id', stream);
 
-app.post('/history', (req, res) => {
+api.post('/history', (req, res) => {
     const { body } = req;
     res.json({ history: historyRepo.log(body) });
 });
 
-app.delete('/history', (_, res) => {
+api.delete('/history', (_, res) => {
     history.del();
     res.sendStatus(200);
 });
 
-app.post('/shutdown', (_, res) => {
+api.post('/shutdown', (_, res) => {
     log('received shutdown request');
     res.sendStatus(202);
     clearInterval(persistInterval);
@@ -59,15 +64,17 @@ app.post('/shutdown', (_, res) => {
     process.exit(0);
 });
 
+app.use('/api', api);
+
 const server = app.listen(PORT || 3001);
 const shutDown = () => {
-    console.log('');
+    console.log('\n\n');
     log('Received kill signal, shutting down gracefully');
     log(`\t*** Saving Db to file...`);
     clearInterval(persistInterval);
     db.write();
     server.close(() => {
-        log('- closed out remaining connections');
+        log('\t\tclosed out remaining connections');
         process.exit(0);
     });
 };
@@ -77,3 +84,6 @@ process.on('uncaughtException', exception => {
     console.error('uncaughtException', exception);
     log(`Uncaught Exception`);
 });
+
+const address = require('address');
+log(`\n\ntee is listening on port ${PORT}\n\n\t http://localhost:${PORT}/\n\t http://${address.ip()}:${PORT}/`);
