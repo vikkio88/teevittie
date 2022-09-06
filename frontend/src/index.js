@@ -11,7 +11,6 @@ import App from './App';
 import store from 'store';
 
 TimeAgo.addDefaultLocale(en);
-store.dispatch('bootstrap');
 const root = createRoot(document.getElementById("root"));
 
 root.render(

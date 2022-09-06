@@ -11,7 +11,7 @@ import { Shows, Show, Episode } from 'pages';
 import a from "store/actions";
 
 const App = () => {
-  const { dispatch, app: { isLoading, error } } = useStoreon('app');
+  const { dispatch, app: { isLoading, error, meta } } = useStoreon('app');
   useEffect(() => dispatch(a.INIT.LOAD), [dispatch]);
 
   const hasError = Boolean(error);
@@ -31,6 +31,7 @@ const App = () => {
           </Routes>
         )}
       </section>
+      <footer>{meta && meta.version}</footer>
     </main>
   );
 };
