@@ -2,4 +2,5 @@ node_modules/
 bin/
 tests/
 nodemon.json
+tmp/
 !build/
