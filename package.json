@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev -- ./tmp\" \"cd frontend && npm run dev\"",
-    "build": "rm -rf backend/build && cd frontend && npm run build && cd .. && cp -r frontend/build backend/build && node scripts/dumpMeta.js > backend/build/assets/meta.json"
+    "build": "rm -rf backend/build && cd frontend && npm run build && cd .. && cp -r frontend/build README.md backend/build && node scripts/dumpMeta.js > backend/build/assets/meta.json"
   },
   "repository": {
     "type": "git",
