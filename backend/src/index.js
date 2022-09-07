@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { PORT = 3001 } = process.env;
+const meta = require('../build/assets/meta.json');
 
 const catalogFolder = process.argv.slice(2)[0];
 const dirExists = require('fs').existsSync(catalogFolder);
@@ -86,4 +87,4 @@ process.on('uncaughtException', exception => {
 });
 
 const address = require('address');
-log(`\n\ntee is listening on port ${PORT}\n\n\t http://localhost:${PORT}/\n\t http://${address.ip()}:${PORT}/`);
+log(`\n\nteevittie (version ${meta.version}) is listening on port ${PORT}\n\n\t http://localhost:${PORT}/\n\t http://${address.ip()}:${PORT}/`);
