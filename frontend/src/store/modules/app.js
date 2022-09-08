@@ -79,7 +79,7 @@ const app = store => {
         store.dispatch(a.HISTORY.LOADED, data);
     });
 
-    store.on(a.HISTORY.LOADED, ({ app }, history) => {
+    store.on(a.HISTORY.LOADED, ({ app }, { history }) => {
         return {
             app: {
                 ...app,

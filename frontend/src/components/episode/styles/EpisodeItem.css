@@ -10,6 +10,12 @@
     margin-bottom: 5px;
 }
 
+.EpisodeItem-wrapper>div.actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .watched {
     opacity: .5;
     border: solid 1px #d3d3d3;

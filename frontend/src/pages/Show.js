@@ -14,8 +14,7 @@ export default () => {
 
     return (
         <>
-            {/* watchedHistory is a bit drilly, could merge the data on the BE side maybe */}
-            <Show {...show} watchedHistory={history.watched} />
+            <Show {...show} />
         </>
     );
 };
