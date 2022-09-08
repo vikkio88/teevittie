@@ -18,7 +18,7 @@ const App = () => {
   const isReady = !isLoading && !hasError;
   return (
     <main>
-      <Header />
+      <Header version={meta && meta.version}/>
       <section>
         {isLoading && <Spinner />}
         {!isLoading && hasError && <Error>{error}</Error>}
@@ -31,7 +31,6 @@ const App = () => {
           </Routes>
         )}
       </section>
-      <footer>{meta && meta.version}</footer>
     </main>
   );
 };

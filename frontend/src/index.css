@@ -25,11 +25,3 @@ section {
   width: 90vw;
   min-height: 80vh;
 }
-
-footer {
-  border: 0;
-  position: absolute;
-  bottom: 0;
-  color: rgb(85, 85, 85);
-  font-size: 10px;
-}
