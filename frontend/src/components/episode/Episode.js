@@ -5,6 +5,7 @@ import a from 'store/actions';
 import './styles/Episode.css';
 import { secondsToHHMMSS } from 'libs/formatters';
 import api from 'api';
+import { I } from 'components/common';
 
 const UPDATE_INTERVAL = 5 * 1000;
 const FINISHED_LEEWAY = .7;
@@ -38,6 +39,13 @@ const continueWatching = time => {
     video.play();
 };
 
+const seek = diff => {
+    const video = document.getElementById('video');
+    video.pause();
+    video.currentTime += diff;
+    video.play();
+};
+
 const Episode = ({ videoId, next, watchedHistory }) => {
     const { dispatch } = useStoreon();
     const nextEpisode = () => window.location.href = `/episode/${next}`;
@@ -52,7 +60,7 @@ const Episode = ({ videoId, next, watchedHistory }) => {
         <div className="Episode-wrapper">
             {watched?.isFinished && (
                 <div className="fullRow">
-                    <button onClick={() => continueWatching(0)}>Reset</button>
+                    <button onClick={() => continueWatching(0)}><I name={I.NAMES.BACK_STEP} /></button>
                     Watched {watched?.timestamp ? (new TimeAgo()).format(watched.timestamp) : ''}
                 </div>
             )}
@@ -69,12 +77,20 @@ const Episode = ({ videoId, next, watchedHistory }) => {
             )}
 
             {watched?.time && !watched?.isFinished && <div className="fullRow">
-                <button onClick={() => continueWatching(0)}>Restart</button>
+                <button onClick={() => continueWatching(0)}><I name={I.NAMES.BACK_STEP} /></button>
                 <button onClick={() => continueWatching(watched.time)}>Continue from {secondsToHHMMSS(watched.time)}</button>
             </div>}
+            {/* MAYBE COULD STYLE THIS ALSO BETTER */}
             <video id="video" width="80%" controls onPlay={playPauseIntercept(setWatched)}>
                 <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
             </video>
+            {/* NEED TO STYLE THIS BETTER */}
+            <div className="bottomRow">
+                <button onClick={() => continueWatching(0)}><I name={I.NAMES.BACK_STEP} /></button>
+                <button onClick={() => seek(-15)}><I name={I.NAMES.CLOCK_ROTATE_LEFT} /></button>
+                {/* NEED TO CHECK HOW TO DO PLAY PAUSE WITHOUT TOO MUCH SET STATE */}
+                {/* <button onClick={() => togglePlay()}><I name={I.NAMES.CLOCK_ROTATE_LEFT} /></button> */}
+            </div>
 
         </div>
     );
