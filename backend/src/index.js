@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const { PORT = 3001 } = process.env;
+const { BANNER } = require('./libs/banner');
+const pkg = require('../package.json');
 const meta = require('../build/assets/meta.json');
 
 const catalogFolder = process.argv.slice(2)[0];
@@ -11,12 +13,13 @@ const db = require('./db').getDb(catalogFolder);
 // every 5 Minutes
 const DB_PERSIST_INTERVAL = 5 * 60 * 1000;
 
+// maybe move this to its own component
 const { date } = require('./libs/formatters');
 const log = message => console.log(`${date()} - ${message}`);
 
 const persistInterval = setInterval(() => {
-    log(`\t*** Saving Db to file...`);
-    db.write();
+    log(`*** Saving Db to file...`);
+    log(`${db.write() ? 'saved to file' : 'no need to write to file'}`);
 }, DB_PERSIST_INTERVAL);
 
 const express = require('express');
@@ -40,6 +43,7 @@ const api = express.Router();
 
 api.get('/ping', (_, res) => res.json({ pong: 1 }));
 api.get('/catalog', (_, res) => {
+    log(`requested catalog.`);
     const history = historyRepo.fetch();
     const { catalog, seasonsMap } = catalogRepo.fromDir(catalogFolder);
     res.json({ catalog, seasonsMap, history });
@@ -53,7 +57,8 @@ api.post('/history', (req, res) => {
 });
 
 api.delete('/history', (_, res) => {
-    history.del();
+    log(`deleted history.`);
+    historyRepo.del();
     res.sendStatus(200);
 });
 
@@ -71,20 +76,23 @@ const server = app.listen(PORT || 3001);
 const shutDown = () => {
     console.log('\n\n');
     log('Received kill signal, shutting down gracefully');
-    log(`\t*** Saving Db to file...`);
+    log(`*** Saving Db to file...`);
     clearInterval(persistInterval);
     db.write();
     server.close(() => {
-        log('\t\tclosed out remaining connections');
+        log('closed out remaining connections');
         process.exit(0);
     });
 };
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
 process.on('uncaughtException', exception => {
-    console.error('uncaughtException', exception);
+    // when I move to chalk might want to log.error red
+    // console.error('uncaughtException', exception);
+    log('uncaughtException', exception);
     log(`Uncaught Exception`);
 });
 
 const address = require('address');
-log(`\n\nteevittie (version ${meta.version}) is listening on port ${PORT}\n\n\t http://localhost:${PORT}/\n\t http://${address.ip()}:${PORT}/`);
+console.log(`\n${BANNER}\t\t(v${pkg.version} - ${meta.version})\n\nlistening on port ${PORT}\ncatalog folder: ${catalogFolder}\n\n\t http://localhost:${PORT}/\n\t http://${address.ip()}:${PORT}/\n\n\nEVENT LOG:`);
+log(`server up an running.`);
