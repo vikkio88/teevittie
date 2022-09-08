@@ -9,7 +9,17 @@
     margin: 0;
 }
 
-.Episode-wrapper > div.fullRow {
+#video {
+    width: 80%;
+}
+
+@media only screen and (max-width: 600px) {
+    #video {
+        width: 100%;
+    }
+}
+
+.Episode-wrapper>div.fullRow {
     display: flex;
     width: 90%;
     flex-direction: row-reverse;
@@ -18,7 +28,22 @@
     z-index: 1;
     position: absolute;
     top: 100px;
-    right:50px;
+    right: 50px;
     background-color: #333;
     opacity: .7;
+}
+
+.Episode-wrapper>div.bottomRow {
+    display: flex;
+    width: 80%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Episode-wrapper>div.bottomRow>div.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }

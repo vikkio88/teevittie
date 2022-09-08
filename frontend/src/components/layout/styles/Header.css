@@ -19,3 +19,8 @@ header>.credits {
 header>.credits a {
     text-decoration: none;
 }
+
+header>.credits a:hover {
+    font-weight: bold;
+    color: #d3d3d3;
+}

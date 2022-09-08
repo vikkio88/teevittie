@@ -3,7 +3,7 @@ import {
     faCheck, faChevronDown,
     faChevronUp, faPlay, faXmark,
     faClockRotateLeft, faBackwardStep,
-    faPause
+    faPause, faRectangleList
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FaIcon } from '@fortawesome/react-fontawesome';
 
@@ -16,6 +16,7 @@ const NAMES = {
     PAUSE: 'pause',
     CLOCK_ROTATE_LEFT: 'clock_rotate_left',
     BACK_STEP: 'back_step',
+    LIST: 'list',
 };
 const NAMES_MAP = {
     [NAMES.CHECK]: faCheck,
@@ -26,6 +27,7 @@ const NAMES_MAP = {
     [NAMES.PAUSE]: faPause,
     [NAMES.CLOCK_ROTATE_LEFT]: faClockRotateLeft,
     [NAMES.BACK_STEP]: faBackwardStep,
+    [NAMES.LIST]: faRectangleList,
 
 };
 
