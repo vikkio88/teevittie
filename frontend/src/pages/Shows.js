@@ -2,7 +2,7 @@ import { useStoreon } from 'storeon/react';
 import { useNavigate } from 'react-router-dom';
 import { ShowItem } from 'components/show/ShowItem';
 
-export default () => {
+const ShowsPage = () => {
     const { app: { catalog } } = useStoreon('app');
     const navigate = useNavigate();
     return (
@@ -14,3 +14,5 @@ export default () => {
         </>
     );
 };
+
+export default ShowsPage;

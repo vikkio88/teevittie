@@ -4,7 +4,7 @@ import { useStoreon } from 'storeon/react';
 import { Spinner } from 'components/common';
 import Show from 'components/show/Show';
 
-export default () => {
+const ShowPage = () => {
     const { id } = useParams();
     const { app: { catalog, history } } = useStoreon('app');
     if (!Boolean(catalog) || !Boolean(history)) return <Spinner />;
@@ -18,3 +18,5 @@ export default () => {
         </>
     );
 };
+
+export default ShowPage;

@@ -1,3 +1,4 @@
-import './Error.css';
+import './styles/Error.css';
 
-export default ({ children }) => <div className="Error"><h3>{children}</h3></div>;
+const Error = ({ children }) => <div className="Error"><h3>{children}</h3></div>;
+export default Error;

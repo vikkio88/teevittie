@@ -29,7 +29,7 @@ const checkIfInHistory = (watchedHistory, videoId, setWatched) => {
 };
 
 const playPauseIntercept = setWatched => event => {
-    const video = event.target;
+    // const video = event.target;
     setWatched(null);
 };
 
@@ -55,6 +55,7 @@ const Episode = ({ videoId, next, watchedHistory }) => {
         const interval = setInterval(syncHistory(video, videoId, dispatch, setWatched), UPDATE_INTERVAL);
         checkIfInHistory(watchedHistory, videoId, setWatched);
         return () => clearInterval(interval);
+        // eslint-disable-next-line
     }, [videoId]);
     return (
         <div className="Episode-wrapper">
