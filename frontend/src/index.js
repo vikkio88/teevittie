@@ -6,6 +6,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 
 import 'mini.css/dist/mini-dark.min.css';
+import 'react-tippy/dist/tippy.css'
 import './index.css';
 import App from './App';
 import store from 'store';
