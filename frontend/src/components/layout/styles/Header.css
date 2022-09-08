@@ -7,10 +7,15 @@ header {
     justify-content: space-between;
 }
 
+header small {
+    color: rgb(85, 85, 85);
+    font-size: 10px;
+}
+
 header>.credits {
     margin-right: 10px;
 }
-header>.credits a{
+
+header>.credits a {
     text-decoration: none;
 }
-
