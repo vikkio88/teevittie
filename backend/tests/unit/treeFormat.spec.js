@@ -1,6 +1,6 @@
 const { test } = require('@japa/runner');
 
-const format = require('../src/libs/treeFormat');
+const format = require('../../src/libs/treeFormat');
 
 const treeExample = {
   children: [

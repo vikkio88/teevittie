@@ -12,7 +12,6 @@ const db = require('./db').getDb(catalogFolder);
 
 // every 5 Minutes
 const DB_PERSIST_INTERVAL = 5 * 60 * 1000;
-
 // maybe move this to its own component
 const { date } = require('./libs/formatters');
 const log = message => console.log(`${date()} - ${message}`);

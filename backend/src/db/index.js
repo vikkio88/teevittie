@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-
-const TEE_FOLDER_DB_NAME = `tee_db.json`;
+const { TEE_FOLDER_DB_NAME } = require('../config');
 
 let db = null;
 

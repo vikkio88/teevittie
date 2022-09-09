@@ -7,11 +7,12 @@
   "scripts": {
     "prepublishOnly": "cd .. && npm run build && cd backend",
     "start": "node src/index.js",
+    "start:test": "node src/index.js ./tmp",
     "dev": "nodemon src/index.js ./tmp",
     "dev:f": "nodemon src/index.js",
-    "test": "node bin/test.js",
-    "test:watch": "node bin/test.js --watch",
-    "test:folders": "node scripts/generateTestFolders.js",
+    "test:unit": "node bin/test.js unit",
+    "test:api": "concurrently \"npm run start:test\" \"wait-on http://localhost:3001 && node bin/test.js api\"",
+    "gen:test:folders": "node scripts/generateTestFolders.js",
     "rm:test:folders": "node scripts/removeTestFolders.js"
   },
   "keywords": [
@@ -30,9 +31,12 @@
     "tiny-hashes": "^1.0.1"
   },
   "devDependencies": {
+    "@japa/api-client": "^1.4.2",
     "@japa/expect": "^2.0.0",
     "@japa/runner": "^2.1.1",
     "@japa/spec-reporter": "^1.2.0",
-    "nodemon": "^2.0.19"
+    "concurrently": "^7.4.0",
+    "nodemon": "^2.0.19",
+    "wait-on": "^6.0.1"
   }
 }

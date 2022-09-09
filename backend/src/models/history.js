@@ -10,7 +10,7 @@ module.exports = {
             return data.history;
         }
         data.history = { ...emptyHistory };
-        data.save(data);
+        db.save(data);
 
         return db.data.history;
     },
