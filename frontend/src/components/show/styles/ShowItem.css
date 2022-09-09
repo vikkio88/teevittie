@@ -7,4 +7,11 @@
     border-radius: 3px;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ShowItem>h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

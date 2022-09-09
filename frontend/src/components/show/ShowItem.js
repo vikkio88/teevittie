@@ -1,3 +1,4 @@
+import { I } from 'components/common';
 import './styles/ShowItem.css';
 
 export const ShowItem = ({ name, seasons, onView }) => {
@@ -8,7 +9,7 @@ export const ShowItem = ({ name, seasons, onView }) => {
                 {name}
             </h3>
             <span>{seasonsCount} seasons</span>
-            <button onClick={onView}>View</button>
+            <button onClick={onView}><I name={I.NAMES.CHEV_RIGHT} /></button>
         </div>
     );
 };

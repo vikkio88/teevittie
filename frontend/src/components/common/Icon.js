@@ -3,7 +3,8 @@ import {
     faCheck, faChevronDown,
     faChevronUp, faPlay, faXmark,
     faClockRotateLeft, faBackwardStep,
-    faPause, faRectangleList
+    faPause, faRectangleList, faChevronRight,
+    faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FaIcon } from '@fortawesome/react-fontawesome';
 
@@ -12,6 +13,8 @@ const NAMES = {
     X: 'x',
     CHEV_UP: 'chev_up',
     CHEV_DOWN: 'chev_down',
+    CHEV_RIGHT: 'chev_right',
+    CHEV_LEFT: 'chev_left',
     PLAY: 'play',
     PAUSE: 'pause',
     CLOCK_ROTATE_LEFT: 'clock_rotate_left',
@@ -23,6 +26,8 @@ const NAMES_MAP = {
     [NAMES.X]: faXmark,
     [NAMES.CHEV_UP]: faChevronUp,
     [NAMES.CHEV_DOWN]: faChevronDown,
+    [NAMES.CHEV_RIGHT]: faChevronRight,
+    [NAMES.CHEV_LEFT]: faChevronLeft,
     [NAMES.PLAY]: faPlay,
     [NAMES.PAUSE]: faPause,
     [NAMES.CLOCK_ROTATE_LEFT]: faClockRotateLeft,

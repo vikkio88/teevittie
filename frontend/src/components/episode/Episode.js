@@ -47,7 +47,7 @@ const seek = diff => {
     video.play();
 };
 
-const Episode = ({ videoId, next, watchedHistory }) => {
+const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
     const { dispatch } = useStoreon();
     const [showId] = videoId.split('.');
     const nextEpisode = () => window.location.href = `/episode/${next}`;
@@ -92,9 +92,10 @@ const Episode = ({ videoId, next, watchedHistory }) => {
             </video>
             {/* NEED TO STYLE THIS BETTER */}
             <div className="bottomRow">
-                <T title="Other Seasons">
+                <T title={`Back to ${show}`}>
                     <Link to={`/show/${showId}`}><I name={I.NAMES.LIST} /></Link>
                 </T>
+                <small>{name} ({show} - {season})</small>
                 <div className="controls">
                     <T title="Reset">
                         <button onClick={() => continueWatching(0)}><I name={I.NAMES.BACK_STEP} /></button>

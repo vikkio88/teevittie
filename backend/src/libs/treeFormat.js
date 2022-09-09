@@ -8,31 +8,35 @@ const TYPE = {
 const directories = s => s.type === TYPE.DIRECTORY;
 const files = s => s.type === TYPE.FILE;
 
-const format = tree => {
+const cleanFilename = filename => {
+    return filename.replace(/\.[^.]*$/, '').replace(/\./g, ' ').replace(/_/g, ' ').trim();
+};
+
+const format = (tree, getId = sha1) => {
     const formatted = [];
     const indexed = {};
     const seasonsMap = {};
 
     const shows = tree.children.filter(directories);
     for (const show of shows) {
-        const showId = sha1(show.name);
+        const showId = getId(show.name);
         const seasonsUnformatted = (show.children && show.children.filter(directories)) || [];
         const hasSeasons = Boolean(seasonsUnformatted.length);
         if (!hasSeasons) continue;
 
         const seasons = [];
         seasonsMap[showId] = {};
+        const episodesLinks = {};
+        let previousEpisode = null;
         for (const season of seasonsUnformatted) {
             const unformattedEpisodes = (season.children && season.children.filter(files)) || [];
             const hasEpisodes = Boolean(unformattedEpisodes.length);
             if (!hasEpisodes) continue;
 
-            const seasonId = sha1(season.name);
+            const seasonId = getId(season.name);
             const episodes = [];
-            const episodesLinks = {};
-            let previousEpisode = null;
             for (const episode of unformattedEpisodes) {
-                const id = sha1(episode.name);
+                const id = getId(episode.name);
                 const fullId = `${showId}.${seasonId}.${id}`;
                 indexed[fullId] = episode.path;
                 if (Boolean(previousEpisode)) {
@@ -44,8 +48,11 @@ const format = tree => {
                 episodes.push({
                     id,
                     fullId,
-                    name: episode.name,
-                    path: episode.path
+                    name: cleanFilename(episode.name),
+                    path: episode.path,
+                    // Additional info
+                    show: show.name,
+                    season: season.name,
                 });
             }
 
