@@ -8,8 +8,10 @@ export const ShowItem = ({ name, seasons, onView }) => {
             <h3>
                 {name}
             </h3>
-            <span>{seasonsCount} seasons</span>
-            <button onClick={onView}><I name={I.NAMES.CHEV_RIGHT} /></button>
+            <div>
+                <span>{seasonsCount} season{`${seasonsCount > 1 ? 's' : ''}`}</span>
+                <button onClick={onView}><I name={I.NAMES.CHEV_RIGHT} /></button>
+            </div>
         </div>
     );
 };
