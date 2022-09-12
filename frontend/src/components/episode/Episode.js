@@ -9,14 +9,14 @@ import api from 'api';
 import { I, T } from 'components/common';
 
 const UPDATE_INTERVAL = 5 * 1000;
-const FINISHED_LEEWAY = .85;
+const FINISHED_LEEWAY = .95;
 
 const syncHistory = (video, videoId, dispatch, setWatched) => () => {
     const { currentTime, duration, paused } = video;
     const isFinished = currentTime >= duration * FINISHED_LEEWAY;
     if (isFinished) setWatched({ justFinished: true });
     if (paused) return;
-    dispatch(a.HISTORY.SYNC, { time: video.currentTime, id: videoId, finished: isFinished });
+    dispatch(a.HISTORY.SYNC, { time: video.currentTime, total: video.duration, id: videoId, finished: isFinished });
 };
 
 const checkIfInHistory = (watchedHistory, videoId, setWatched) => {
