@@ -50,9 +50,14 @@ api.get('/catalog', (_, res) => {
 
 api.get('/stream/:id', stream);
 
-api.post('/history', (req, res) => {
+api.put('/history', (req, res) => {
     const { body } = req;
     res.json({ history: historyRepo.log(body) });
+});
+
+api.patch('/history', (req, res) => {
+    const { body } = req;
+    res.json({ history: historyRepo.logMany(body) });
 });
 
 api.delete('/history', (_, res) => {
@@ -63,9 +68,9 @@ api.delete('/history', (_, res) => {
 
 api.post('/shutdown', (_, res) => {
     log('received shutdown request');
-    res.sendStatus(202);
     clearInterval(persistInterval);
     db.write();
+    res.sendStatus(202);
     process.exit(0);
 });
 

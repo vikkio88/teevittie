@@ -14,10 +14,19 @@ module.exports = {
 
         return db.data.history;
     },
-    log: ({ id, time = null, finished = false }) => {
+    logMany(rows) {
+        const data = db.data;
+        for (const { time, id, finished } of rows) {
+            data.history.watched[id] = { time, finished, total: null, timestamp: date(), };
+        }
+        db.save(data);
+
+        return db.data.history;
+    },
+    log: ({ id, time = null, total = null, finished = false }) => {
         if (!Boolean(id)) return db.data.history;
         const data = db.data;
-        data.history.watched[id] = { time, finished, timestamp: date(), };
+        data.history.watched[id] = { time, finished, total, timestamp: date(), };
         db.save(data);
 
         return db.data.history;

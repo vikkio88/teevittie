@@ -78,6 +78,12 @@ const app = store => {
         const data = resp.data;
         store.dispatch(a.HISTORY.LOADED, data);
     });
+    
+    store.on(a.HISTORY.PATCH, async (_, dataToSync) => {
+        const resp = await api.history.patch(dataToSync);
+        const data = resp.data;
+        store.dispatch(a.HISTORY.LOADED, data);
+    });
 
     store.on(a.HISTORY.LOADED, ({ app }, { history }) => {
         return {

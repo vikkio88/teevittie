@@ -10,6 +10,7 @@ const actions = {
     },
     HISTORY: {
         SYNC: 'syncHistory',
+        PATCH: 'patchHistory',
         LOADED: 'historyLoaded',
     },
     LOADING: {
