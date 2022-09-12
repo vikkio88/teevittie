@@ -42,3 +42,9 @@ a:hover {
   text-decoration: none;
   color: aqua;
 }
+
+h3.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
