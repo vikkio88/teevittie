@@ -3,6 +3,7 @@ import { I, T } from 'components/common';
 import a from 'store/actions';
 
 import './styles/EpisodeItem.css';
+import { secondsToHHMMSS } from 'libs/formatters';
 
 
 const EpisodeItem = ({ name, fullId, dispatch, watchedHistory = {} }) => {
@@ -14,6 +15,11 @@ const EpisodeItem = ({ name, fullId, dispatch, watchedHistory = {} }) => {
         <div className={`EpisodeItem-wrapper${watched ? ' watched' : ''}`}>
             {name}
             <div className="actions">
+                {!watchedHistory.finished && watchedHistory.total && watched && (
+                    <T title={`${secondsToHHMMSS(watchedHistory.time)} / ${secondsToHHMMSS(watchedHistory.total)}`}>
+                        <progress max={watchedHistory.total} value={watchedHistory.time} style={{ width: '30px', height: '5px' }} />
+                    </T>
+                )}
                 {!watched && <T title="Mark As Watched">
                     <button onClick={() => setWatched()}><I name={I.NAMES.CHECK} /></button>
                 </T>}
