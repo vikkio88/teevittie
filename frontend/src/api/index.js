@@ -12,8 +12,13 @@ const api = {
         }
     },
     history: {
-        async sync({ id, time = 0, finished = false }) {
-            return xhr.post('/history', { id, time, finished });
+        async sync(data) {
+            return xhr.put('/history', data);
+        },
+        async patch({ ids = [], finished }) {
+            const toPatch = ids.map(id => ({ id, time: finished ? 1 : 0, finished }));
+            if (!Boolean(toPatch.length)) return;
+            return xhr.patch('/history', toPatch);
         }
     },
     streamUrl: videoId => `${baseURL}/stream/${videoId}`
