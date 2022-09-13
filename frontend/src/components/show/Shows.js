@@ -1,10 +1,6 @@
-import { useStoreon } from 'storeon/react';
-import { useNavigate } from 'react-router-dom';
 import { ShowItem } from 'components/show/ShowItem';
 
-const ShowsPage = () => {
-    const { app: { catalog } } = useStoreon('app');
-    const navigate = useNavigate();
+const Shows = ({ catalog, navigate }) => {
     const folderHasShows = Array.isArray(catalog) && Boolean(catalog.length);
     return (
         <>
@@ -26,4 +22,4 @@ const ShowsPage = () => {
     );
 };
 
-export default ShowsPage;
+export default Shows;
