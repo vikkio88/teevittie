@@ -41,6 +41,14 @@ const api = express.Router();
 
 
 api.get('/ping', (_, res) => res.json({ pong: 1 }));
+
+api.get('/boot', (_, res) => {
+    log(`booting up.`);
+    const history = historyRepo.fetch();
+    const { catalog, seasonsMap } = catalogRepo.fromDir(catalogFolder);
+    res.json({ catalog, seasonsMap, history, meta: { version: `v${pkg.version} - ${meta.version}` } });
+});
+
 api.get('/catalog', (_, res) => {
     log(`requested catalog.`);
     const history = historyRepo.fetch();

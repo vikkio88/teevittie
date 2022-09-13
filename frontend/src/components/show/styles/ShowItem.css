@@ -1,17 +1,37 @@
+.Shows-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
 .ShowItem {
     display: flex;
     padding: 20px;
-    flex-direction: row;
+    flex: 1;
+    flex-direction: column;
     background: #333;
     margin: 10px;
     border-radius: 3px;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.ShowItem>h3 {
+@media only screen and (max-width: 600px) {
+    .Shows-wrapper {
+        flex-direction: row;
+    }
+
+    .ShowItem {
+        margin: 5px;
+    }
+}
+
+.ShowItem>h4 {
     overflow: hidden;
     text-overflow: ellipsis;
 }

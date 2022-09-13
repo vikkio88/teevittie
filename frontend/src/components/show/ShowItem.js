@@ -5,9 +5,9 @@ export const ShowItem = ({ name, seasons, onView }) => {
     const seasonsCount = seasons.length;
     return (
         <div className="ShowItem">
-            <h3>
+            <h4>
                 {name}
-            </h3>
+            </h4>
             <div>
                 <span>{seasonsCount} season{`${seasonsCount > 1 ? 's' : ''}`}</span>
                 <button onClick={onView}><I name={I.NAMES.CHEV_RIGHT} /></button>

@@ -6,6 +6,11 @@ const xhr = axios.create({
 });
 
 const api = {
+    boot: {
+        async get() {
+            return xhr.get('/boot');
+        }
+    },
     catalog: {
         async all() {
             return xhr.get('/catalog');

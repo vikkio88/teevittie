@@ -11,12 +11,12 @@ import { I, T } from 'components/common';
 const UPDATE_INTERVAL = 5 * 1000;
 const FINISHED_LEEWAY = .95;
 
-const syncHistory = (video, videoId, dispatch, setWatched) => () => {
+const syncHistory = (video, { videoId, info }, dispatch, setWatched) => () => {
     const { currentTime, duration, paused } = video;
     const isFinished = currentTime >= duration * FINISHED_LEEWAY;
     if (isFinished) setWatched({ justFinished: true });
     if (paused) return;
-    dispatch(a.HISTORY.SYNC, { time: video.currentTime, total: video.duration, id: videoId, finished: isFinished });
+    dispatch(a.HISTORY.SYNC, { time: video.currentTime, total: video.duration, id: videoId, info, finished: isFinished });
 };
 
 const checkIfInHistory = (watchedHistory, videoId, setWatched) => {
@@ -54,7 +54,7 @@ const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
     const [watched, setWatched] = useState(null); //{ time: 0, isFinished: false, timestamp, justFinished }
     useEffect(() => {
         const video = document.getElementById('video');
-        const interval = setInterval(syncHistory(video, videoId, dispatch, setWatched), UPDATE_INTERVAL);
+        const interval = setInterval(syncHistory(video, { videoId, info: { name, show, season } }, dispatch, setWatched), UPDATE_INTERVAL);
         checkIfInHistory(watchedHistory, videoId, setWatched);
         return () => clearInterval(interval);
         // eslint-disable-next-line

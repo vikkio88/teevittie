@@ -12,7 +12,7 @@ import a from "store/actions";
 
 const App = () => {
   const { dispatch, app: { isLoading, error, meta } } = useStoreon('app');
-  useEffect(() => dispatch(a.INIT.LOAD), [dispatch]);
+  useEffect(() => dispatch(a.BOOT.LOAD), [dispatch]);
 
   const hasError = Boolean(error);
   const isReady = !isLoading && !hasError;

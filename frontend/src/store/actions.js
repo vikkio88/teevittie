@@ -1,8 +1,8 @@
 const actions = {
     _INIT: '@init',
-    INIT: {
-        LOAD: 'initLoad',
-        LOADED: 'initLoaded',
+    BOOT: {
+        LOAD: 'bootload',
+        LOADED: 'bootLoaded',
     },
     CATALOG: {
         LOAD: 'loadCatalog',

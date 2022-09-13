@@ -17,16 +17,12 @@ const app = store => {
         return { app: { ...initialState } };
     });
 
-    store.on(a.INIT.LOAD, async () => {
+    store.on(a.BOOT.LOAD, async () => {
         store.dispatch(a.LOADING.STARTED);
         try {
-            const [catalogResp, metaResp] = await Promise.all([
-                api.catalog.all(),
-                fetch(`/assets/meta.json`),
-            ]);
-            const meta = await metaResp.json();
-            const data = catalogResp.data;
-            store.dispatch(a.INIT.LOADED, { ...data, meta });
+            const resp = await api.boot.get();
+            const { catalog, history, seasonsMap, meta } = resp.data;
+            store.dispatch(a.BOOT.LOADED, { catalog, seasonsMap, history, meta });
         } catch (error) {
             store.dispatch(a.ERROR, 'Loading Catalog Failed');
         }
@@ -42,7 +38,7 @@ const app = store => {
         };
     });
 
-    store.on(a.INIT.LOADED, ({ app }, { catalog, history, seasonsMap, meta }) => {
+    store.on(a.BOOT.LOADED, ({ app }, { catalog, history, seasonsMap, meta }) => {
         return {
             app: {
                 ...app,
@@ -78,7 +74,7 @@ const app = store => {
         const data = resp.data;
         store.dispatch(a.HISTORY.LOADED, data);
     });
-    
+
     store.on(a.HISTORY.PATCH, async (_, dataToSync) => {
         const resp = await api.history.patch(dataToSync);
         const data = resp.data;
