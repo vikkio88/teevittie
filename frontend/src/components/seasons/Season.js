@@ -46,6 +46,7 @@ const Season = ({ name, episodes }) => {
                         dispatch={dispatch}
                         watchedHistory={history ? (history.watched[e.fullId] || {}) : {}}
                         {...e}
+                        highlightWatched
                     />
                 )
                 )}
