@@ -1,5 +1,6 @@
 const latestStackHelper = {
     handle(body, max, stack) {
+        stack = Boolean(stack) ? stack : [];
         if (body.finished) {
             return this.remove(body.id, stack);
         }

@@ -32,7 +32,7 @@ module.exports = {
         const { id, time = null, total = null, finished = false, info = null } = episodeBody;
         const watchedInfo = { time, finished, total, timestamp: date() };
         data.history.watched[id] = { ...watchedInfo };
-        data.history.latest = latestStackHelper.handle({ ...episodeBody }, MAX_LATEST_EPISODES, data.history.latest);
+        data.history.latest = latestStackHelper.handle({ ...episodeBody }, MAX_LATEST_EPISODES, data.history.latest || []);
         db.save(data);
 
         return db.data.history;

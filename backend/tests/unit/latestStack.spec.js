@@ -61,4 +61,12 @@ test.group('Latest Stack Handling', () => {
     expect(result[1]).toEqual(makeEpisode({ id: 'anId1' }));
   });
 
+  test('it works if stack is null or undefined', ({ expect }) => {
+    let result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, null);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false }]);
+
+    result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, undefined);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false }]);
+  });
+
 });
