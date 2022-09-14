@@ -12,7 +12,7 @@ const MainPage = () => {
 
     return (
         <>
-            {history.latest.length && (
+            {Boolean(history?.latest) && history.latest.length > 0 && (
                 <>
                     <h2>Keep Watching</h2>
                     {history.latest.map(e => <EpisodeItem key={e.id} {...e.info} watchedHistory={{ ...e }} dispatch={dispatch} />)}

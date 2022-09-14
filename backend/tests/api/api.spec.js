@@ -15,10 +15,25 @@ test.group('Api smoke tests', () => {
         expect(response.body()).toEqual({ pong: 1 });
     });
 
+    test('get /api/boot', async ({ client, expect }) => {
+        const response = await client.get('/api/boot');
+        expect(response.status()).toBe(200);
+    });
+
     test('get /api/catalog', async ({ client, expect }) => {
         const response = await client.get('/api/catalog');
         expect(response.status()).toBe(200);
-        expect(fs.existsSync(`./tmp/${TEE_FOLDER_DB_NAME}`)).toBe(true);
+    });
+
+    test('put /api/history', async ({ client, expect }) => {
+        const response = await client.put('/api/history').json({ id: 'someId', time: 1, finished: false });
+        expect(response.status()).toBe(200);
+    });
+
+
+    test('patch /api/history', async ({ client, expect }) => {
+        const response = await client.patch('/api/history').json([{ id: 'someId', time: 1, finished: false }, { id: 'someId2', time: 1, finished: false }]);
+        expect(response.status()).toBe(200);
     });
 
     test('get /api/catalog without a file db', async ({ client, expect }) => {
@@ -34,5 +49,6 @@ test.group('Api smoke tests', () => {
         expect(response.status()).toBe(202);
 
         expect(fs.existsSync(`./tmp/${TEE_FOLDER_DB_NAME}`)).toBe(true);
+        fs.rmSync(`./tmp/${TEE_FOLDER_DB_NAME}`);
     });
 });
