@@ -1,6 +1,10 @@
 # teevittie
 Your personal drop in streaming service.
 
+
+  [![NPM Version][npm-version-image]][npm-url]
+  [![NPM Downloads][npm-downloads-image]][npm-downloads-url]
+
 Imagine you have a perfectly **LEGALLY** downloaded folder with loads of video files organised like so:
 
 ```
@@ -48,7 +52,21 @@ npm install -g teevittie
 teevittie path/to/folder
 ```
 
-then follow the instructions on the cli
+then follow the instructions on the cli.
+
+Other arguments:
+
+```
+    --folder  - specify catalog folder ( --folder='Documents/)', if none passes it will be using current folder.
+
+    --port    - specify the port, default ${DEFAULT_PORT}, ( --port=3030 ).
+
+    --browser - open the browser automatically (on if no folder specified).
+
+    -v        - it will show you the version of teevittie.
+
+    -h        - shows this help.
+```
 
 ### Screen Recording
 [![TeeYT](https://user-images.githubusercontent.com/248805/188894180-08ee0462-7104-47c7-a212-e37bf1a036c3.png)](https://youtu.be/zr9qo2cx35k)
@@ -57,3 +75,11 @@ then follow the instructions on the cli
 ### Features
 1. Storing History so you can pick where you left
 2. Suggesting the next episode once finished
+3. Open browser and current folder if dropped in into a single folder (useful for an exe pack)
+
+
+
+[npm-version-image]: https://badgen.net/npm/v/teevittie
+[npm-url]: https://npmjs.org/package/teevittie
+[npm-downloads-url]: https://npmcharts.com/compare/teevittie?minimal=true
+[npm-downloads-image]: https://badgen.net/npm/dm/teevittie
