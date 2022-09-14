@@ -7,7 +7,7 @@ const initialState = {
     history: null,
     seasonsMap: null,
     error: false,
-    meta: { version: null }
+    meta: { version: null, urls: {} }
 };
 
 

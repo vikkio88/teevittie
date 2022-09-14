@@ -10,12 +10,14 @@ const MainPage = () => {
 
     if (!Boolean(catalog) || !Boolean(history)) return <Spinner />;
 
+    console.log({yo: history.latest})
+
     return (
         <>
             {Boolean(history?.latest) && history.latest.length > 0 && (
                 <>
                     <h2>Keep Watching</h2>
-                    {history.latest.map(e => <EpisodeItem key={e.id} {...e.info} watchedHistory={{ ...e }} dispatch={dispatch} />)}
+                    {history.latest.map(e => <EpisodeItem key={e.id} fullId={e.id} {...e.info} watchedHistory={{ ...e }} dispatch={dispatch} />)}
                 </>
             )}
             <Shows {...{ navigate, catalog }} />

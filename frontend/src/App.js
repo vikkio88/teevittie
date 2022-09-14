@@ -8,7 +8,7 @@ import { Header } from 'components/layout';
 import { Spinner, Error } from 'components/common';
 import { Main, Show, Episode } from 'pages';
 
-import a from "store/actions";
+import a from 'store/actions';
 
 const App = () => {
   const { dispatch, app: { isLoading, error, meta } } = useStoreon('app');

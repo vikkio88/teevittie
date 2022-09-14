@@ -6,7 +6,7 @@ import './styles/EpisodeItem.css';
 import { secondsToHHMMSS } from 'libs/formatters';
 
 
-const EpisodeItem = ({ name, show = null, season = null, fullId, dispatch, watchedHistory = {}, highlightWatched = false }) => {
+const EpisodeItem = ({ name, show = null, season = null, fullId, dispatch, watchedHistory = {}, highlightWatched = false, ...rest }) => {
     const navigate = useNavigate();
     const watched = (Boolean(watchedHistory.time) || Boolean(watchedHistory.finished));
     const setWatched = (watched = true) => dispatch(a.HISTORY.SYNC, { time: watched ? 1 : 0, id: fullId, finished: watched });
