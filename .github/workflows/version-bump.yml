@@ -1,0 +1,45 @@
+name: Version Bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: 'SemVer bump'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - major
+        - minor
+        - patch
+jobs:
+  bump-version:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Use Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.17.0'
+
+    - name: Installing backend deps
+      run: npm ci
+      working-directory: backend
+    
+    - name: Version Bump
+      run: echo ${{ github.event.inputs.semver }}
+      working-directory: backend
+    # - name: Version Bump
+    #   run: npm version ${{ github.event.inputs.semver }}
+    #   working-directory: backend
+
+    # - name: Commit New Version
+    #   run: |
+    #     git config --global user.name 'Github'
+    #     git config --global user.email 'github@users.noreply.github.com'
+    #     git commit -am "[skip ci] version bump"
+    #     git push
+
