@@ -35,6 +35,10 @@ jobs:
     - name: Building FE bundle
       run: npm run build
     
+    - name: Adding example video file
+      run: wget -c https://filesamples.com/samples/video/mp4/sample_960x540.mp4 -O scripts/example.mp4
+      working-directory: backend
+    
     - name: Generating Test folders
       run: npm run gen:test:folders
       working-directory: backend
