@@ -10,8 +10,6 @@ const MainPage = () => {
 
     if (!Boolean(catalog) || !Boolean(history)) return <Spinner />;
 
-    console.log({yo: history.latest})
-
     return (
         <>
             {Boolean(history?.latest) && history.latest.length > 0 && (

@@ -1,7 +1,7 @@
 const latestStackHelper = {
     handle(body, max, stack) {
         stack = Boolean(stack) ? stack : [];
-        if (body.finished) {
+        if (body.finished || body.time === 0) {
             return this.remove(body.id, stack);
         }
         const found = stack.length && stack.findIndex(({ id }) => id === body.id);
