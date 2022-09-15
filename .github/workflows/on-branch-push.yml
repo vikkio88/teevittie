@@ -20,17 +20,27 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '16.17.0'
-    - run: npm ci
-    - run: npm ci
+
+    - name: Installing root deps
+      run: npm ci
+
+    - name: Installing backend deps
+      run: npm ci
       working-directory: backend
-    - run: npm ci
+
+    - name: Installing frontend deps
+      run: npm ci
       working-directory: frontend
-    - run: npm run build
-    - run: npm run test:unit
+
+    - name: Building FE bundle
+      run: npm run build
+
+    - name: Running unit tests
+      run: npm run test:unit
       working-directory: backend
-    - run: npm build
-      working-directory: backend
-    - run: npm run test:api
+
+    - name: Running api smoke tests
+      run: npm run test:api
       working-directory: backend
 
     
