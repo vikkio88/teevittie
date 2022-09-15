@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  teevittie:
+    container_name: teevittie
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '3001:3001'

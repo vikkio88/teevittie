@@ -1,0 +1,41 @@
+name: On Branch Push
+
+on:
+  push:
+    branches-ignore:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  tests:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Use Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.17.0'
+    - run: npm ci
+      working-directory: backend
+    - run: npm test:unit
+      working-directory: backend
+    - run: npm test:api
+      working-directory: backend
+
+    
+
+  # e2e-tests:
+  #   timeout-minutes: 10
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v1
+
+  #   - name: Start containers
+  #     run: docker-compose up -d --build
