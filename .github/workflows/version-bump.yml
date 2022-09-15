@@ -28,18 +28,15 @@ jobs:
     - name: Installing backend deps
       run: npm ci
       working-directory: backend
-    
-    - name: Version Bump
-      run: echo ${{ github.event.inputs.semver }}
-      working-directory: backend
-    # - name: Version Bump
-    #   run: npm version ${{ github.event.inputs.semver }}
-    #   working-directory: backend
 
-    # - name: Commit New Version
-    #   run: |
-    #     git config --global user.name 'Github'
-    #     git config --global user.email 'github@users.noreply.github.com'
-    #     git commit -am "[skip ci] version bump"
-    #     git push
+    - name: Version Bump
+      run: npm version ${{ github.event.inputs.semver }}
+      working-directory: backend
+
+    - name: Commit New Version
+      run: |
+        git config --global user.name 'Github CI'
+        git config --global user.email 'github@users.noreply.github.com'
+        git commit -am "[skip ci] version bump"
+        git push
 
