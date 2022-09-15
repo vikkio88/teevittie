@@ -3,5 +3,6 @@ bin/
 tests/
 nodemon.json
 tmp/
+dist/
 scripts/
 !build/
