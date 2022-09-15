@@ -1,14 +1,11 @@
 const { test } = require('@japa/runner');
 
-const format = require('../../src/libs/treeFormat');
+const { format, TYPE } = require('../../src/libs/treeFormat');
 
-const treeExample = {
-  children: [
-    { name: 'SomeEmptyFolder', type: 'directory', children: [] },
-  ]
-};
+
 
 test.group('Catalog Generation', () => {
+
   test('format rejects empty folders', ({ expect }) => {
     const treeExample = {
       children: [
@@ -101,3 +98,36 @@ test.group('Catalog Generation', () => {
   });
 
 });
+
+// TESTS TO COLLECT VIDEO FILES FROM OTHER DIRECTORIES TOO
+// test.group('Catalog Single Files Addition', () => {
+//   test('format rejects empty folders', ({ expect }) => {
+//     const treeExample = {
+//       children: [
+//         {
+//           name: 'SomeShowFolder', type: TYPE.DIRECTORY, children: [
+//             { name: 'ARandomVideoFileWithoutSeason.mp4', path: 'some/Rando', type: TYPE.FILE },
+//             {
+//               name: 'SomeSeasonFolder', type: TYPE.DIRECTORY, children: [
+//                 { name: 'VideoFileWithinSeason.mp4', path: 'some/season/Video', type: TYPE.FILE },
+//               ]
+//             }
+//           ]
+//         },
+//         { name: 'SomeEmptyFolder', type: TYPE.DIRECTORY, children: [] },
+//         {
+//           name: 'SomeOtherFolder', type: TYPE.DIRECTORY, children: [
+//             { name: 'AVideoInOtherF.mp4', path: 'some2/f', type: TYPE.FILE },
+//             { name: 'AVideoInOtherF2.mp4', path: 'some2/f2', type: TYPE.FILE },
+//           ]
+//         },
+//         { name: 'ARandomVideoInRoot.mp4', path: 'root/file1', type: TYPE.FILE },
+//         { name: 'ARandomVideoInRoot2.mp4', path: 'root/file2', type: TYPE.FILE },
+//       ]
+//     };
+
+//     const result = format(treeExample);
+//     expect(result.formatted).toEqual([]);
+//     expect(result.indexed).toEqual({});
+//   });
+// });
