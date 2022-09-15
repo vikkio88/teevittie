@@ -21,8 +21,14 @@ jobs:
       with:
         node-version: '16.17.0'
     - run: npm ci
+    - run: npm ci
       working-directory: backend
+    - run: npm ci
+      working-directory: frontend
+    - run: npm run build
     - run: npm run test:unit
+      working-directory: backend
+    - run: npm build
       working-directory: backend
     - run: npm run test:api
       working-directory: backend
