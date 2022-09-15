@@ -11,7 +11,7 @@
     "dev": "nodemon src/index.js ./tmp",
     "dev:f": "nodemon src/index.js",
     "test:unit": "node bin/test.js unit",
-    "test:api": "concurrently \"npm run start:test\" \"wait-on http://localhost:3001/api/ping && node bin/test.js api\"",
+    "test:api": "concurrently \"npm run start:test\" \"wait-on --timeout 5000 http://localhost:3001/api/ping && node bin/test.js api\"",
     "gen:test:folders": "node scripts/generateTestFolders.js",
     "rm:test:folders": "node scripts/removeTestFolders.js"
   },
@@ -40,5 +40,9 @@
     "concurrently": "^7.4.0",
     "nodemon": "^2.0.19",
     "wait-on": "^6.0.1"
+  },
+  "pkg": {
+    "assets": "build/**/*",
+    "outputPath": "dist"
   }
 }

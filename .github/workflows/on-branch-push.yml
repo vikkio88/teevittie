@@ -1,0 +1,66 @@
+name: On Branch Push
+
+on:
+  push:
+    branches-ignore:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  tests:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+ 
+    - name: Use Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.17.0'
+
+    - name: Installing root deps
+      run: npm ci
+
+    - name: Installing backend deps
+      run: npm ci
+      working-directory: backend
+
+    - name: Installing frontend deps
+      run: npm ci
+      working-directory: frontend
+
+    - name: Building FE bundle
+      run: npm run build
+    
+    - name: Adding example video file
+      run: wget -c https://filesamples.com/samples/video/mp4/sample_960x540.mp4 -O scripts/example.mp4
+      working-directory: backend
+    
+    - name: Generating Test folders
+      run: npm run gen:test:folders
+      working-directory: backend
+
+    - name: Running unit tests
+      run: npm run test:unit
+      working-directory: backend
+
+    - name: Running api smoke tests
+      run: npm run test:api
+      working-directory: backend
+
+    
+
+  # e2e-tests:
+  #   timeout-minutes: 10
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v1
+
+  #   - name: Start containers
+  #     run: docker-compose up -d --build
