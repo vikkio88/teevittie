@@ -1,0 +1,27 @@
+name: Playwright Tests
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main 
+jobs:
+  test:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+
+    - name: Spin up dockerised Teevittie
+      run: docker-compose up -d
+
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: turn off dockerised Teevittie
+      run: docker-compose down

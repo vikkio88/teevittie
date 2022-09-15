@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/vikkio88/teevittie#readme",
   "devDependencies": {
+    "@playwright/test": "^1.25.2",
     "concurrently": "^7.3.0"
   }
 }
