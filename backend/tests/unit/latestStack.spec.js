@@ -3,13 +3,13 @@ const { test } = require('@japa/runner');
 const { latestStackHelper } = require('../../src/libs/latestStack');
 
 const basicInfo = { name: 'yo' };
-const makeEpisode = ({ id = 'anEpisodeId', info = { ...basicInfo }, finished = false }) => ({ id, info, finished });
+const makeEpisode = ({ id = 'anEpisodeId', info = { ...basicInfo }, time = 30, finished = false }) => ({ id, info, time, finished });
 const MAX = 3;
 
 test.group('Latest Stack Handling', () => {
   test('when empty adds an episode that is not finished on top', ({ expect }) => {
     const result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, []);
-    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false }]);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false, time: 30 }]);
   });
 
   test('when almost full adds an episode that is not finished on top', ({ expect }) => {
@@ -63,10 +63,18 @@ test.group('Latest Stack Handling', () => {
 
   test('it works if stack is null or undefined', ({ expect }) => {
     let result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, null);
-    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false }]);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false, time: 30 }]);
 
     result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, undefined);
-    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false }]);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false, time: 30 }]);
+  });
+
+  test('if the episode is set to unwatched so with time 0 it should disappear from latestStack', ({ expect }) => {
+    let result = latestStackHelper.handle(makeEpisode({ id: 'anId' }), MAX, []);
+    expect(result).toEqual([{ id: 'anId', info: basicInfo, finished: false, time: 30 }]);
+
+    result = latestStackHelper.handle(makeEpisode({ id: 'anId', time: 0 }), MAX, result);
+    expect(result).toEqual([]);
   });
 
 });

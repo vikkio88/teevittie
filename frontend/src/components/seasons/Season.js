@@ -22,6 +22,10 @@ const Season = ({ name, episodes }) => {
     }
     const allEpisodes = episodes.length;
     const allWatched = watched === allEpisodes;
+    const toggleWatchedOnAllEpisodes = event => {
+        event.stopPropagation();
+        dispatch(a.HISTORY.PATCH, { ids: allWatched ? episodesIds.all : episodesIds.nonWatched, finished: !allWatched });
+    };
 
     return (
         <>
@@ -32,7 +36,7 @@ const Season = ({ name, episodes }) => {
                 <div>
                     {watched} / {allEpisodes}
                     <T title={`${allWatched ? 'Reset Progress' : 'Mark all as Watched'}`}>
-                        <button onClick={() => dispatch(a.HISTORY.PATCH, { ids: allWatched ? episodesIds.all : episodesIds.nonWatched, finished: !allWatched })}>
+                        <button onClick={toggleWatchedOnAllEpisodes}>
                             <I name={allWatched ? I.NAMES.X : I.NAMES.CHECK} />
                         </button>
                     </T>
