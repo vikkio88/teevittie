@@ -1,0 +1,42 @@
+name: Playwright Tests
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  E2E-Tests:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+    
+    - name: Build latest FE
+      run: npm ci && cd frontend && npm ci && cd .. && npm run build
+
+    - name: Spin up dockerised Teevittie
+      run: docker-compose up -d --build
+
+    - name: Install e2e dependencies
+      run: npm ci
+      working-directory: e2e
+  
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      working-directory: e2e
+    
+    - name: Run Tests
+      run: npx playwright test
+      working-directory: e2e
+    
+    - name: Check docker logs if failed
+      if: failure()
+      run: docker-compose logs
+
+    - name: turn off Teevittie
+      if: always()
+      run: docker-compose down

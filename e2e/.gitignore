@@ -1,8 +1,5 @@
-.env
 node_modules/
-dist/
-tmp/
-.eslintcache
 /test-results/
 /playwright-report/
 /playwright/.cache/
+tests-examples/

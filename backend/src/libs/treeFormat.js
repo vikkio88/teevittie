@@ -74,4 +74,4 @@ const format = (tree, getId = sha1) => {
     return { formatted, indexed, seasonsMap };
 };
 
-module.exports = format;
+module.exports = { format, TYPE };

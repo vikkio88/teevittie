@@ -1,7 +1,7 @@
 const dirTree = require('directory-tree');
 const { date } = require('../libs/formatters');
 const db = require('../db').getDb();
-const format = require('../libs/treeFormat');
+const { format } = require('../libs/treeFormat');
 
 const { VIDEO_FILE_EXTENSIONS } = require('./enums');
 
