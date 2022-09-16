@@ -26,8 +26,7 @@ jobs:
       working-directory: e2e
     
     - name: Run Tests
-      run: npx playwright test
-      working-directory: e2e
+      run: cd e2e && npx playwright test
 
     - name: turn off Teevittie
       run: docker-compose down
