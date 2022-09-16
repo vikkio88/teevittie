@@ -17,11 +17,17 @@ jobs:
     - name: Spin up dockerised Teevittie
       run: docker-compose up -d
 
-    - name: Install dependencies
+    - name: Install e2e dependencies
       run: npm ci
-      
+      working-directory: e2e
+  
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+      working-directory: e2e
+    
+    - name: Run Tests
+      run: npx playwright test
+      working-directory: e2e
 
-    - name: turn off dockerised Teevittie
+    - name: turn off Teevittie
       run: docker-compose down
