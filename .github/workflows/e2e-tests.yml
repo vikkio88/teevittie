@@ -3,9 +3,10 @@ on:
   push:
     branches: main
   pull_request:
-    branches: main 
+    branches: main
+
 jobs:
-  test:
+  E2E-Tests:
     timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
