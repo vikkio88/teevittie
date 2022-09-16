@@ -15,7 +15,7 @@ jobs:
         node-version: '16.x'
 
     - name: Spin up dockerised Teevittie
-      run: docker-compose up -d && docker-compose logs
+      run: docker-compose up -d --build
 
     - name: Install e2e dependencies
       run: npm ci
@@ -28,6 +28,11 @@ jobs:
     - name: Run Tests
       run: npx playwright test
       working-directory: e2e
+    
+    - name: Check docker logs if failed
+      if: failure()
+      run: docker-compose logs
 
     - name: turn off Teevittie
+      if: always()
       run: docker-compose down
