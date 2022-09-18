@@ -7,10 +7,11 @@ const TYPE = {
 
 const directories = s => s.type === TYPE.DIRECTORY;
 const files = s => s.type === TYPE.FILE;
+const isSubtitle = f => f.name.endsWith('.vvt') || f.name.endsWith('.VVT');
 
-const cleanFilename = filename => {
-    return filename.replace(/\.[^.]*$/, '').replace(/\./g, ' ').replace(/_/g, ' ').trim();
-};
+const cleanFilename = filename => filename.replace(/\.[^.]*$/, '').replace(/\./g, ' ').replace(/_/g, ' ').trim();
+
+const removeExtension = filename => filename.replace(/\.[^/.]+$/, '');
 
 const format = (tree, getId = sha1) => {
     const formatted = [];
@@ -29,10 +30,18 @@ const format = (tree, getId = sha1) => {
         const episodesLinks = {};
         let previousEpisode = null;
         for (const season of seasonsUnformatted) {
-            const unformattedEpisodes = (season.children && season.children.filter(files)) || [];
+            const unformattedFilesInSeason = (season.children && season.children.filter(files)) || [];
+            const unformattedEpisodes = unformattedFilesInSeason.filter(f => !isSubtitle(f));
             const hasEpisodes = Boolean(unformattedEpisodes.length);
             if (!hasEpisodes) continue;
-
+            const subs = unformattedFilesInSeason.filter(isSubtitle).map(({ name, path }) => ({ name, path, plainName: removeExtension(name) }));
+            const indexedSubs = {};
+            for (const sub of subs) {
+                // atm I am only adding 1, but I will
+                // make it an array just in case I will
+                // need to add more languages
+                indexedSubs[sub.plainName] = [sub];
+            }
             const seasonId = getId(season.name);
             const episodes = [];
             for (const episode of unformattedEpisodes) {
@@ -44,11 +53,13 @@ const format = (tree, getId = sha1) => {
                 }
                 episodesLinks[fullId] = null;
                 previousEpisode = fullId;
+                const plainName = removeExtension(episode.name);
 
                 episodes.push({
                     id,
                     fullId,
                     name: cleanFilename(episode.name),
+                    subs: indexedSubs[plainName] ?? null,
                     path: episode.path,
                     // Additional info
                     show: show.name,

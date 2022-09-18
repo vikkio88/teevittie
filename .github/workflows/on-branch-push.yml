@@ -1,9 +1,6 @@
 name: On Branch Push
 
 on:
-  # push:
-  #   branches-ignore:
-  #   - main
   pull_request:
     branches:
     - main
@@ -44,7 +41,11 @@ jobs:
       run: npm run gen:test:folders
       working-directory: backend
 
-    - name: Running unit tests
+    - name: Running fe unit tests
+      run: npm run test
+      working-directory: frontend
+
+    - name: Running be unit tests
       run: npm run test:unit
       working-directory: backend
 

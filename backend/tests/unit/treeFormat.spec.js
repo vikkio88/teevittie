@@ -3,7 +3,6 @@ const { test } = require('@japa/runner');
 const { format, TYPE } = require('../../src/libs/treeFormat');
 
 
-
 test.group('Catalog Generation', () => {
 
   test('format rejects empty folders', ({ expect }) => {
@@ -45,7 +44,7 @@ test.group('Catalog Generation', () => {
         },
       ]
     };
-    const { formatted, indexed, seasonsMap } = format(treeExample, name => name.replace(/[\s\.]+/g, '_', name));
+    const { formatted, indexed, seasonsMap } = format(treeExample, name => name.replace(/[\s\.]/g, '_', name));
 
 
     expect(formatted.length).toBeGreaterThan(0);
@@ -78,7 +77,8 @@ test.group('Catalog Generation', () => {
       name: 'Episode 1 omg sick',
       path: 'some/file/path/1',
       show: 'SomeNotEmptyFolder',
-      season: 'Season1'
+      subs: null,
+      season: 'Season1',
     });
 
 
@@ -97,6 +97,44 @@ test.group('Catalog Generation', () => {
     expect(seasonsMap[showId][seasonIds.s2][episodeIds.s2e2]).toBe(null);
   });
 
+});
+
+test.group('Catalog Subtitles Indexing', ({ expect }) => {
+  test('testing whether the subtitle gets associated to the episode if it has the same filename', ({ expect }) => {
+    const treeExample = {
+      children: [
+        {
+          name: 'SomeShowFolder', type: TYPE.DIRECTORY, children: [
+            {
+              name: 'Season1', type: 'directory', children: [
+                { name: 'Episode.1_omg_sick.mp4', path: 'some/file/path/1', type: TYPE.FILE },
+                { name: 'Episode.1_omg_sick.vvt', path: 'some/file/path/1.vvt', type: TYPE.FILE },
+              ]
+            }
+          ]
+        },
+      ]
+    };
+
+    const { formatted } = format(treeExample, name => name.replace(/[\s\.]/g, '_', name));
+    expect(formatted.length).toBe(1);
+    expect(formatted[0].seasons.length).toBe(1);
+    expect(formatted[0].seasons[0].episodes.length).toBe(1);
+    expect(formatted[0].seasons[0].episodes[0]).toEqual({
+      "fullId": "SomeShowFolder.Season1.Episode_1_omg_sick_mp4",
+      "id": "Episode_1_omg_sick_mp4",
+      "name": "Episode 1 omg sick",
+      "path": "some/file/path/1",
+      "season": "Season1",
+      "show": "SomeShowFolder",
+      "subs": [{
+        "name": "Episode.1_omg_sick.vvt",
+        "path": "some/file/path/1.vvt",
+        "plainName": "Episode.1_omg_sick",
+      }]
+    });
+
+  });
 });
 
 // TESTS TO COLLECT VIDEO FILES FROM OTHER DIRECTORIES TOO

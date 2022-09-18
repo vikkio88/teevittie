@@ -26,7 +26,13 @@ const api = {
             return xhr.patch('/history', toPatch);
         }
     },
-    streamUrl: videoId => `${baseURL}/stream/${videoId}`
+    streamUrl: videoId => `${baseURL}/stream/${videoId}`,
+    subs: {
+        urlFromVideoId: (videoId, trackIndex) => `${baseURL}/subs/${videoId}?track=${trackIndex}`,
+        async get(videoId) {
+            return xhr.get(`/subs/${videoId}`);
+        }
+    }
 };
 
 

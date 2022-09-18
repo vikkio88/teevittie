@@ -3,7 +3,7 @@ const cors = require('cors');
 const { log } = require('../libs/logger');
 const catalogRepo = require('../models/catalog');
 const historyRepo = require('../models/history');
-const stream = require('../models/stream');
+const { stream, subtitles } = require('../models/video');
 
 const makeApp = (catalogFolder, args) => {
     const { pkgVersion, commitHash, persistInterval, urls } = args;
@@ -37,6 +37,7 @@ const makeApp = (catalogFolder, args) => {
     });
 
     api.get('/stream/:id', stream);
+    api.get('/subs/:id', subtitles);
 
     api.put('/history', (req, res) => {
         const { body } = req;

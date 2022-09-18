@@ -47,9 +47,10 @@ const seek = diff => {
     video.play();
 };
 
-const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
+const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistory }) => {
     const { dispatch } = useStoreon();
     const [showId] = videoId.split('.');
+
     const nextEpisode = () => window.location.href = `/episode/${next}`;
     const [watched, setWatched] = useState(null); //{ time: 0, isFinished: false, timestamp, justFinished }
     useEffect(() => {
@@ -87,8 +88,22 @@ const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
                 </T>
                 <button onClick={() => continueWatching(watched.time)}>Continue from {secondsToHHMMSS(watched.time)}</button>
             </div>}
-            <video id="video" width="80%" controls onPlay={playPauseIntercept(setWatched)}>
+            <video id="video"
+                width="80%"
+                controls onPlay={playPauseIntercept(setWatched)}
+                // this crossOrigin is here just to load the track from 3000 on dev
+                crossOrigin="anonymous"
+                >
                 <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
+                {Boolean(subs && subs.length) && subs.map((_, i) => (
+                    <track
+                        key={i}
+                        src={api.subs.urlFromVideoId(videoId, i)}
+                        label="English"
+                        kind="subtitles"
+                        srcLang="en"
+                    />
+                ))}
             </video>
             {/* NEED TO STYLE THIS BETTER */}
             <div className="bottomRow">

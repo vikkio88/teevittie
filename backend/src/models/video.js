@@ -1,5 +1,6 @@
 const db = require('../db').getDb();
 const fs = require('fs');
+const path = require('path');
 
 const stream = (req, res) => {
     const chunkSize = 3000000;
@@ -39,4 +40,32 @@ const stream = (req, res) => {
     videoStream.pipe(res);
 };
 
-module.exports = stream;
+const subtitles = (req, res) => {
+    const { id } = req.params;
+
+    //@TODO Fix this shit
+    const ids = id.split('.');
+    const episode = db.data.catalog.find(s => s.id === ids[0])?.seasons?.find(s => s.id === ids[1])?.episodes.find(e => e.id === ids[2]) ?? null;
+    if (!episode || !Boolean(episode.subs && episode.subs.length)) {
+        res.sendStatus(404);
+        return;
+    }
+    // this is crap
+    // we also send track index as there might be more subs, 
+    // at the moment I get only 1, the first
+    const subTrack = episode.subs[0];
+    const subsFilepath = path.join(process.cwd(), subTrack.path);
+    if (!fs.existsSync(subsFilepath)) {
+        return res.status(404).json({
+            status: 404,
+            message: "Subtitles File not Found",
+        });
+    }
+
+
+    res.sendFile(subsFilepath);//, { headers: { 'Content-Type': 'text/vtt' } });// move to ENUMS
+};
+
+
+
+module.exports = { stream, subtitles };
