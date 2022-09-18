@@ -3,7 +3,7 @@ const { date } = require('../libs/formatters');
 const db = require('../db').getDb();
 const { format } = require('../libs/treeFormat');
 
-const { VIDEO_FILE_EXTENSIONS } = require('./enums');
+const { VIDEO_FILE_EXTENSIONS, SUBTITLES_EXTENSIONS } = require('./enums');
 
 // 20 minutes cache of catalog
 const CATALOG_CACHE_TIMEOUT = 20 * 60 * 1000;
@@ -20,7 +20,7 @@ const fromDir = directory => {
     const data = db.data;
     if (!Boolean(data.catalog) || hasCacheExpired(db.data)) {
         const tree = dirTree(directory, {
-            extensions: new RegExp(`\.(${VIDEO_FILE_EXTENSIONS.join('|')})$`)
+            extensions: new RegExp(`\.(${[...VIDEO_FILE_EXTENSIONS, ...SUBTITLES_EXTENSIONS].join('|')})$`)
         });
         const { formatted, indexed, seasonsMap } = format(tree);
         data.catalog = formatted;
@@ -28,6 +28,7 @@ const fromDir = directory => {
         data.seasonsMap = seasonsMap;
         data.indexedTime = date();
         db.save(data);
+        db.write();
     }
 
     return { catalog: db.data.catalog, seasonsMap: db.data.seasonsMap };

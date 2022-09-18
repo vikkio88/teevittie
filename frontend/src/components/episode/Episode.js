@@ -47,9 +47,10 @@ const seek = diff => {
     video.play();
 };
 
-const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
+const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistory }) => {
     const { dispatch } = useStoreon();
     const [showId] = videoId.split('.');
+
     const nextEpisode = () => window.location.href = `/episode/${next}`;
     const [watched, setWatched] = useState(null); //{ time: 0, isFinished: false, timestamp, justFinished }
     useEffect(() => {
@@ -58,7 +59,7 @@ const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
         checkIfInHistory(watchedHistory, videoId, setWatched);
         return () => clearInterval(interval);
         // eslint-disable-next-line
-    }, [videoId]);
+    }, [videoId, subs]);
     return (
         <div className="Episode-wrapper">
             {watched?.isFinished && (
@@ -89,6 +90,7 @@ const Episode = ({ videoId, season, show, name, next, watchedHistory }) => {
             </div>}
             <video id="video" width="80%" controls onPlay={playPauseIntercept(setWatched)}>
                 <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
+                {Boolean(subs) && <track src={api.subs.urlFromVideoId(videoId)} label="English" kind="subtitles" srcLang="en" ></track>}
             </video>
             {/* NEED TO STYLE THIS BETTER */}
             <div className="bottomRow">

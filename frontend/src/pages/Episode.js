@@ -1,7 +1,9 @@
 import { Spinner } from 'components/common';
-import Episode from 'components/episode/Episode';
 import { useParams } from "react-router-dom";
 import { useStoreon } from 'storeon/react';
+import { catalogHelper } from 'libs/helpers';
+
+import Episode from 'components/episode/Episode';
 
 const EpisodePage = () => {
     const { id } = useParams();
@@ -9,11 +11,14 @@ const EpisodePage = () => {
     const ids = id.split('.');
 
     if (!history || !catalog) return <Spinner />;
-    // move this crap somewhere else, maybe rendindex folder too and serve that
-    const { season, show, name } = catalog.find(s => s.id === ids[0])?.seasons?.find(s => s.id === ids[1])?.episodes.find(e => e.id === ids[2]);
-    //
+    const { season, show, name, subs = null } = catalogHelper.getEpisodeById(id, catalog);
 
-    return <Episode {...{ season, show, name }} videoId={id} watchedHistory={history.watched || {}} next={seasonsMap[ids[0]][ids[1]][id]} />;
+    return <Episode
+        {...{ season, show, name, subs }}
+        videoId={id}
+        watchedHistory={history.watched || {}}
+        next={seasonsMap[ids[0]][ids[1]][id]}
+    />;
 };
 
 export default EpisodePage;
