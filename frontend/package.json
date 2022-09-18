@@ -24,6 +24,7 @@
     "dev": "REACT_APP_IS_DEV=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:unit": "npm test -- --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

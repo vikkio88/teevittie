@@ -28,7 +28,7 @@ const api = {
     },
     streamUrl: videoId => `${baseURL}/stream/${videoId}`,
     subs: {
-        urlFromVideoId: videoId => `${baseURL}/subs/${videoId}`,
+        urlFromVideoId: (videoId, trackIndex) => `${baseURL}/subs/${videoId}?track=${trackIndex}`,
         async get(videoId) {
             return xhr.get(`/subs/${videoId}`);
         }

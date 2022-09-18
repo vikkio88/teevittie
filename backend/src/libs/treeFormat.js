@@ -37,7 +37,10 @@ const format = (tree, getId = sha1) => {
             const subs = unformattedFilesInSeason.filter(isSubtitle).map(({ name, path }) => ({ name, path, plainName: removeExtension(name) }));
             const indexedSubs = {};
             for (const sub of subs) {
-                indexedSubs[sub.plainName] = sub;
+                // atm I am only adding 1, but I will
+                // make it an array just in case I will
+                // need to add more languages
+                indexedSubs[sub.plainName] = [sub];
             }
             const seasonId = getId(season.name);
             const episodes = [];

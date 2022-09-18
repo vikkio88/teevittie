@@ -127,11 +127,11 @@ test.group('Catalog Subtitles Indexing', ({ expect }) => {
       "path": "some/file/path/1",
       "season": "Season1",
       "show": "SomeShowFolder",
-      "subs": {
+      "subs": [{
         "name": "Episode.1_omg_sick.vvt",
         "path": "some/file/path/1.vvt",
         "plainName": "Episode.1_omg_sick",
-      }
+      }]
     });
 
   });

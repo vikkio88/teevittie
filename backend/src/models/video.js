@@ -46,13 +46,15 @@ const subtitles = (req, res) => {
     //@TODO Fix this shit
     const ids = id.split('.');
     const episode = db.data.catalog.find(s => s.id === ids[0])?.seasons?.find(s => s.id === ids[1])?.episodes.find(e => e.id === ids[2]) ?? null;
-    if (!episode || !Boolean(episode.subs)) {
+    if (!episode || !Boolean(episode.subs && episode.subs.length)) {
         res.sendStatus(404);
         return;
     }
     // this is crap
-
-    const subsFilepath = path.join(process.cwd(), episode.subs.path);
+    // we also send track index as there might be more subs, 
+    // at the moment I get only 1, the first
+    const subTrack = episode.subs[0];
+    const subsFilepath = path.join(process.cwd(), subTrack.path);
     if (!fs.existsSync(subsFilepath)) {
         return res.status(404).json({
             status: 404,

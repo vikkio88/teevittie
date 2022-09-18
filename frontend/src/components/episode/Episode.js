@@ -59,7 +59,7 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
         checkIfInHistory(watchedHistory, videoId, setWatched);
         return () => clearInterval(interval);
         // eslint-disable-next-line
-    }, [videoId, subs]);
+    }, [videoId]);
     return (
         <div className="Episode-wrapper">
             {watched?.isFinished && (
@@ -88,9 +88,22 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
                 </T>
                 <button onClick={() => continueWatching(watched.time)}>Continue from {secondsToHHMMSS(watched.time)}</button>
             </div>}
-            <video id="video" width="80%" controls onPlay={playPauseIntercept(setWatched)}>
+            <video id="video"
+                width="80%"
+                controls onPlay={playPauseIntercept(setWatched)}
+                // this crossOrigin is here just to load the track from 3000 on dev
+                crossOrigin="anonymous"
+                >
                 <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
-                {Boolean(subs) && <track src={api.subs.urlFromVideoId(videoId)} label="English" kind="subtitles" srcLang="en" ></track>}
+                {Boolean(subs && subs.length) && subs.map((_, i) => (
+                    <track
+                        key={i}
+                        src={api.subs.urlFromVideoId(videoId, i)}
+                        label="English"
+                        kind="subtitles"
+                        srcLang="en"
+                    />
+                ))}
             </video>
             {/* NEED TO STYLE THIS BETTER */}
             <div className="bottomRow">
