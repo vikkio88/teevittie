@@ -45,6 +45,11 @@ const subtitles = (req, res) => {
 
     //@TODO Fix this shit
     const ids = id.split('.');
+    if (ids.length < 3) {
+        res.sendStatus(400, { message: `Invalid id: ${id}` });
+        return;
+    }
+
     const episode = db.data.catalog.find(s => s.id === ids[0])?.seasons?.find(s => s.id === ids[1])?.episodes.find(e => e.id === ids[2]) ?? null;
     if (!episode || !Boolean(episode.subs && episode.subs.length)) {
         res.sendStatus(404);

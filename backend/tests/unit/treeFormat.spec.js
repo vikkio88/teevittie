@@ -108,7 +108,7 @@ test.group('Catalog Subtitles Indexing', ({ expect }) => {
             {
               name: 'Season1', type: 'directory', children: [
                 { name: 'Episode.1_omg_sick.mp4', path: 'some/file/path/1', type: TYPE.FILE },
-                { name: 'Episode.1_omg_sick.vvt', path: 'some/file/path/1.vvt', type: TYPE.FILE },
+                { name: 'Episode.1_omg_sick.vtt', path: 'some/file/path/1.vtt', type: TYPE.FILE },
               ]
             }
           ]
@@ -128,8 +128,8 @@ test.group('Catalog Subtitles Indexing', ({ expect }) => {
       "season": "Season1",
       "show": "SomeShowFolder",
       "subs": [{
-        "name": "Episode.1_omg_sick.vvt",
-        "path": "some/file/path/1.vvt",
+        "name": "Episode.1_omg_sick.vtt",
+        "path": "some/file/path/1.vtt",
         "plainName": "Episode.1_omg_sick",
       }]
     });

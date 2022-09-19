@@ -34,8 +34,8 @@ for (let i = 0; i < shows; i++) {
             fs.copyFileSync('scripts/example.mp4', episodeFilepath);
             if (randomBool()) {
                 console.log(`       -- adding subtitle to episode: ${episode}`);
-                const subtitleFilePath = path.join(dir, show, season, `${episodeName}.vvt`);
-                fs.copyFileSync('scripts/example.vvt', subtitleFilePath);
+                const subtitleFilePath = path.join(dir, show, season, `${episodeName}.vtt`);
+                fs.copyFileSync('scripts/example.vtt', subtitleFilePath);
             }
 
 
