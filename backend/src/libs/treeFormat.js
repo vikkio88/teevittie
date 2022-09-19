@@ -7,7 +7,7 @@ const TYPE = {
 
 const directories = s => s.type === TYPE.DIRECTORY;
 const files = s => s.type === TYPE.FILE;
-const isSubtitle = f => f.name.endsWith('.vvt') || f.name.endsWith('.VVT');
+const isSubtitle = f => f.name.endsWith('.vtt') || f.name.endsWith('.VTT');
 
 const cleanFilename = filename => filename.replace(/\.[^.]*$/, '').replace(/\./g, ' ').replace(/_/g, ' ').trim();
 
