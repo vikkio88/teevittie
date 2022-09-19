@@ -44,6 +44,38 @@ test.group('Api smoke tests', () => {
         expect(response.status()).toBe(200);
     });
 
+    test('get /api/stream', async ({ client, expect }) => {
+        const response = await client.get('/api/catalog');
+        expect(response.status()).toBe(200);
+        const { catalog = {} } = response.body();
+        const firstEpisodeId = catalog[0].seasons[0].episodes[0].fullId;
+
+        let responseStream = await client.get(`/api/stream/${firstEpisodeId}`);
+        expect(responseStream.status()).toBe(400);
+        responseStream = await client.get(`/api/stream/someRandomId`).header('range', 0);
+        expect(responseStream.status()).toBe(404);
+        responseStream = await client.get(`/api/stream/${firstEpisodeId}`).header('range', 0);
+        expect(responseStream.status()).toBe(206);
+    });
+
+    test('get /api/subs', async ({ client, expect }) => {
+        const response = await client.get('/api/catalog');
+        expect(response.status()).toBe(200);
+        const { catalog = {} } = response.body();
+        const episodeWithoutSubs = catalog[0].seasons[0].episodes.find(e => e.subs === null);
+        let episodeWithSubs = catalog[0].seasons[0].episodes.find(e => e.subs !== null);
+        if (episodeWithSubs === null) {
+            episodeWithSubs = catalog[1].seasons[0].episodes.find(e => e.subs !== null);
+        }
+
+        let responseStream = await client.get(`/api/subs/someRandomId`);
+        expect(responseStream.status()).toBe(400);
+        responseStream = await client.get(`/api/subs/${episodeWithoutSubs.fullId}`);
+        expect(responseStream.status()).toBe(404);
+        responseStream = await client.get(`/api/subs/${episodeWithSubs.fullId}`);
+        expect(responseStream.status()).toBe(200);
+    });
+
     test('post /api/shutdown', async ({ client, expect }) => {
         const response = await client.post('/api/shutdown');
         expect(response.status()).toBe(202);
