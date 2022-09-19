@@ -31,9 +31,8 @@ const makeApp = (catalogFolder, args) => {
 
     api.get('/catalog', (_, res) => {
         log(`requested catalog.`);
-        const history = historyRepo.fetch();
         const { catalog, seasonsMap } = catalogRepo.fromDir(catalogFolder);
-        res.json({ catalog, seasonsMap, history });
+        res.json({ catalog, seasonsMap });
     });
 
     api.get('/stream/:id', stream);
