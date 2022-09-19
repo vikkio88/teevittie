@@ -11,7 +11,8 @@ const EpisodeItem = ({ name, subs = null, show = null, season = null, fullId, di
     const watched = (Boolean(watchedHistory.time) || Boolean(watchedHistory.finished));
     const setWatched = (watched = true) => dispatch(a.HISTORY.SYNC, { time: watched ? 1 : 0, id: fullId, finished: watched });
     const watch = () => navigate(`/episode/${fullId}`);
-    const episodeTitle = `${show ? `${show} - ` : ''}${season ? `${season} - ` : ''}${name}`;
+    // this is to show more info in case you are in the Main Page, we dont highlight in main page
+    const episodeTitle = highlightWatched ? name : `${show ? `${show} - ` : ''}${season ? `${season} - ` : ''}${name}`;
     return (
         <div className={`EpisodeItem-wrapper${watched && highlightWatched ? ' watched' : ''}`}>
             {episodeTitle} {Boolean(subs) ? <T title="Subtitles"><I name={I.NAMES.CC} /></T> : ''}
