@@ -3,7 +3,8 @@ const cors = require('cors');
 const { log } = require('../libs/logger');
 const catalogRepo = require('../models/catalog');
 const historyRepo = require('../models/history');
-const { stream, subtitles } = require('../models/video');
+const { stream, file, subtitles, cast } = require('../models/video');
+const db = require('../db').getDb();
 
 const makeApp = (catalogFolder, args) => {
     const { pkgVersion, commitHash, persistInterval, urls } = args;
@@ -12,10 +13,18 @@ const makeApp = (catalogFolder, args) => {
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.set('view engine', 'ejs');
 
     app.use('/', express.static(__dirname + '/../../build'));
     app.use('/show/*', express.static(__dirname + '/../../build'));
     app.use('/episode/*', express.static(__dirname + '/../../build'));
+    app.use('/episode-cast/:videoId', (req, res) => {
+        const videoId = req.params.videoId;
+        // const [showId, seasonId, episodeId] = videoId.split('.');
+        // db.data.catalog?.[showId]?.seasons?.[seasonId]
+        // this to get metadata
+        res.render(__dirname + '/../../views/test.ejs', { videoUrl: `${urls.lan}/api/file/${videoId}` });
+    });
 
     const api = express.Router();
 
@@ -35,8 +44,11 @@ const makeApp = (catalogFolder, args) => {
         res.json({ catalog, seasonsMap });
     });
 
+    api.get('/file/:id', file);
     api.get('/stream/:id', stream);
     api.get('/subs/:id', subtitles);
+
+    api.post('/cast/:id', cast);
 
     api.put('/history', (req, res) => {
         const { body } = req;

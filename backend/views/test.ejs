@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Your own personal drop-in streaming service" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Teevittie - Chromecast</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/castjs/5.2.0/cast.min.js"></script>
+    <script defer>
+
+        function debug(msg) {
+            document.getElementById("debug").innerText += `${msg}\n`;
+        }
+
+        // Create new Castjs instance
+        const cjs = new Castjs();
+
+        // Optional metadata
+        var metadata = {
+            poster: 'https://castjs.io/media/poster.jpg',
+            title: 'Sintel',
+            description: 'Third Open Movie by Blender Foundation',
+            subtitles: [{
+                active: true,
+                label: 'English',
+                src: 'https://castjs.io/media/english.vtt'
+            }, {
+                label: 'Spanish',
+                src: 'https://castjs.io/media/spanish.vtt'
+            }],
+        };
+
+        cjs.on('available', () => { debug('available'); });  // Casting is available
+        cjs.on('connect', () => { debug('connected'); });  // Connected with device
+        cjs.on('disconnect', () => { debug('disconnected'); });  // Disconnected with device
+        cjs.on('statechange', () => { debug('statechange'); });  // Device state
+        cjs.on('timeupdate', () => { });  // Current time changed
+        cjs.on('volumechange', () => { debug('volumechange'); });  // Volume changed
+        cjs.on('mute', () => { });  // Muted state changed
+        cjs.on('unmute', () => { });  // Muted state changed
+        cjs.on('playing', () => { });  // Media is playing
+        cjs.on('pause', () => { });  // Media is paused
+        cjs.on('end', () => { });  // Media ended
+        cjs.on('buffering', () => { });  // Media is buffering / seeking
+        cjs.on('event', (e) => { console.log('event', e); debug(`event: ${JSON.stringify(e)}`); });  // Catch all events except 'error'
+        cjs.on('error', (e) => { console.log('error', e); debug(`error: ${JSON.stringify(e)}`); });  // Catch any errors
+
+        /*
+            cjs.play();                   // Play media
+            cjs.pause();                  // Pause media
+            cjs.mute();                   // Mutes media
+            cjs.unmute();                 // Unmutes media
+            cjs.subtitle(2);              // Change active subtitle index
+            cjs.seek(15);                 // Seek 15 seconds
+            cjs.seek(15.9, true);         // Seek 15.9% percentage
+            cjs.disconnect(); 
+        */
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.getElementById('play').addEventListener('click', () => { cjs.play(); });
+            document.getElementById('pause').addEventListener('click', () => { cjs.pause(); });
+            document.getElementById('cast').addEventListener('click', () => {
+                debug(`avail: ${cjs.available}`);
+                if (cjs.available) {
+                    cjs.cast('<%= videoUrl %>', metadata);
+                    // cjs.cast('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4', metadata);
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+
+    <button id="cast">CAST</button>
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+
+    <textarea id="debug" style="width: 300px; height: 600px;"></textarea>
+
+</body>
+
+</html>
