@@ -83,7 +83,7 @@ test.group('Catalog Generation', () => {
 
 
     expect(Object.keys(indexed)).toContain(episodeIds.s1e1);
-    expect(indexed[episodeIds.s1e1]).toBe(formatted[0].seasons[0].episodes[0].path);
+    expect(indexed[episodeIds.s1e1]).toEqual(formatted[0].seasons[0].episodes[0]);
 
 
     expect(seasonsMap).not.toBe(null);

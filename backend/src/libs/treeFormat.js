@@ -46,16 +46,17 @@ const format = (tree, getId = sha1) => {
             const episodes = [];
             for (const episode of unformattedEpisodes) {
                 const id = getId(episode.name);
+                //@TODO Id for single files should break here
                 const fullId = `${showId}.${seasonId}.${id}`;
-                indexed[fullId] = episode.path;
+                //
+
                 if (Boolean(previousEpisode)) {
                     episodesLinks[previousEpisode] = fullId;
                 }
                 episodesLinks[fullId] = null;
                 previousEpisode = fullId;
                 const plainName = removeExtension(episode.name);
-
-                episodes.push({
+                const formattedEpisode = {
                     id,
                     fullId,
                     name: cleanFilename(episode.name),
@@ -64,7 +65,10 @@ const format = (tree, getId = sha1) => {
                     // Additional info
                     show: show.name,
                     season: season.name,
-                });
+                };
+
+                episodes.push(formattedEpisode);
+                indexed[fullId] = { ...formattedEpisode };
             }
 
             seasonsMap[showId][seasonId] = episodesLinks;
