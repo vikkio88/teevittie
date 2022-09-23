@@ -1,7 +1,7 @@
 const db = require('../db').getDb();
 const fs = require('fs');
 const path = require('path');
-const mime = require('mime');
+const mime = require('mime-types');
 const { cast, command } = require('../libs/chromecast');
 
 
