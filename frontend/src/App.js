@@ -6,7 +6,10 @@ import {
 } from "react-router-dom";
 import { Header } from 'components/layout';
 import { Spinner, Error } from 'components/common';
-import { Main, Show, Episode } from 'pages';
+import {
+  Main, Show, Episode, EpisodeCast,
+  // WSTest 
+} from 'pages';
 
 import a from 'store/actions';
 
@@ -25,8 +28,10 @@ const App = () => {
         {isReady && (
           <Routes>
             <Route path='/' element={<Main />} />
+            {/* <Route path='/test' element={<Test />} /> */}
             <Route path='/show/:id' element={<Show />} />
             <Route path='/episode/:id' element={<Episode />} />
+            <Route path='/episode-cast/:id' element={<EpisodeCast />} />
             <Route path="*" element={<Error>Link Error</Error>} />
           </Routes>
         )}

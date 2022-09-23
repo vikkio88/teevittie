@@ -27,4 +27,7 @@ test('homepage to show to episode journey', async ({ page }) => {
 
   await page.locator('.EpisodeItem-wrapper button').nth(1).click();
   await expect(page).toHaveURL(/.*episode/);
+
+  const video = page.locator('video');
+  await expect(video).toBeVisible();
 });

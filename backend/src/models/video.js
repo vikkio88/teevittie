@@ -1,11 +1,33 @@
 const db = require('../db').getDb();
 const fs = require('fs');
 const path = require('path');
+const { cast, command } = require('../libs/chromecast');
+
+
+const getFilePathForEpisode = (id, db) => {
+    const { path: filePath = null } = db.data.indexed[id] || {};
+    return filePath;
+};
+
+const file = (req, res) => {
+    const { id } = req.params;
+    const filePath = getFilePathForEpisode(id, db);
+    console.log('REQUESTED FILE', { id, head: req.headers });
+
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({
+            status: 404,
+            message: "Video File not Found",
+        });
+    }
+
+    res.sendFile(path.join(process.cwd(), filePath));
+};
 
 const stream = (req, res) => {
     const chunkSize = 3000000;
     const { id } = req.params;
-    const filePath = db.data.indexed[id];
+    const filePath = getFilePathForEpisode(id, db);
 
     const range = req.headers.range;
     if (!range) {
@@ -42,6 +64,7 @@ const stream = (req, res) => {
 
 const subtitles = (req, res) => {
     const { id } = req.params;
+    console.log('requested subs');
 
     //@TODO Fix this shit
     const ids = id.split('.');
@@ -50,7 +73,7 @@ const subtitles = (req, res) => {
         return;
     }
 
-    const episode = db.data.catalog.find(s => s.id === ids[0])?.seasons?.find(s => s.id === ids[1])?.episodes.find(e => e.id === ids[2]) ?? null;
+    const episode = db.data.indexed[id];
     if (!episode || !Boolean(episode.subs && episode.subs.length)) {
         res.sendStatus(404);
         return;
@@ -71,6 +94,21 @@ const subtitles = (req, res) => {
     res.sendFile(subsFilepath);//, { headers: { 'Content-Type': 'text/vtt' } });// move to ENUMS
 };
 
+const castRequest = (urls) => (req, res) => {
+    const { id } = req.params;
+
+    const episode = db.data.indexed[id];
+    cast(episode, urls);
+    res.sendStatus(202);
+};
+
+const castCommand = (req, res) => {
+    const { body } = req;
+    command(body.command);
+    res.sendStatus(202);
+
+};
 
 
-module.exports = { stream, subtitles };
+
+module.exports = { stream, subtitles, file, castRequest, castCommand };

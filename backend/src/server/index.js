@@ -1,9 +1,28 @@
 const express = require('express');
+const { Server } = require('socket.io');
+const http = require('http');
 const cors = require('cors');
 const { log } = require('../libs/logger');
 const catalogRepo = require('../models/catalog');
 const historyRepo = require('../models/history');
-const { stream, subtitles } = require('../models/video');
+const { stream, file, subtitles, castRequest, castCommand } = require('../models/video');
+
+let io = null;
+
+const commandHandler = console.log;
+
+const initWs = io => {
+    log('ws: starting up');
+    io.on('connection', (socket) => {
+        const id = socket.client.id;
+        console.log(`ws: ${id} connected`);
+        socket.on('disconnect', () => {
+            console.log(`ws: ${id} disconnected`);
+        });
+
+        socket.on('command', commandHandler);
+    });
+};
 
 const makeApp = (catalogFolder, args) => {
     const { pkgVersion, commitHash, persistInterval, urls } = args;
@@ -18,8 +37,6 @@ const makeApp = (catalogFolder, args) => {
     app.use('/episode/*', express.static(__dirname + '/../../build'));
 
     const api = express.Router();
-
-
     api.get('/ping', (_, res) => res.json({ pong: 1 }));
 
     api.get('/boot', (_, res) => {
@@ -35,8 +52,12 @@ const makeApp = (catalogFolder, args) => {
         res.json({ catalog, seasonsMap });
     });
 
+    api.get('/file/:id', file);
     api.get('/stream/:id', stream);
     api.get('/subs/:id', subtitles);
+
+    api.put('/cast', castCommand);
+    api.post('/cast/:id', castRequest(urls));
 
     api.put('/history', (req, res) => {
         const { body } = req;
@@ -62,8 +83,24 @@ const makeApp = (catalogFolder, args) => {
         process.exit(0);
     });
 
+    api.put('/ws', (req, res) => {
+        if (!io) {
+            io = new Server(server, {
+                cors: { origin: [urls.local, urls.lan, 'http://localhost:3000'], methods: ['GET', 'POST'] }
+            });
+            initWs(io);
+            res.sendStatus(201);
+            return;
+        }
+        res.sendStatus(200);
+    });
+
+
     app.use('/api', api);
-    return app;
+    const server = http.createServer(app);
+
+
+    return server;
 };
 
 module.exports = makeApp;

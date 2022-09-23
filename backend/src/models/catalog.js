@@ -23,6 +23,47 @@ const fromDir = directory => {
             extensions: new RegExp(`\.(${[...VIDEO_FILE_EXTENSIONS, ...SUBTITLES_EXTENSIONS].join('|')})$`)
         });
         const { formatted, indexed, seasonsMap } = format(tree);
+        /**
+         formatted: 
+         [ 
+            //Show
+            {  
+                name,
+                seasons: [
+                    { 
+                        name,
+                        episodes: [
+                            {
+                                id,
+                                fullId,
+                                name
+                                subs: [] ?? null,
+                                path, // file path
+                                // Additional info
+                                show: show.name,
+                                season: season.name,
+                            };
+                            }
+                        ]
+                    }
+                ]
+            }
+         ]
+
+         // indexed
+         {
+            fullEpisodeId : {
+                    id,
+                    fullId,
+                    name: cleanFilename(episode.name),
+                    subs: indexedSubs[plainName] ?? null,
+                    path: episode.path,
+                    // Additional info
+                    show: show.name,
+                    season: season.name,
+            }
+         }
+         */
         data.catalog = formatted;
         data.indexed = indexed;
         data.seasonsMap = seasonsMap;

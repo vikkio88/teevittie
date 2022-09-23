@@ -32,6 +32,19 @@ const api = {
         async get(videoId) {
             return xhr.get(`/subs/${videoId}`);
         }
+    },
+
+    // this is shit, will reimplement with ws soon
+    cast: {
+        async play(videoId) {
+            return xhr.post(`cast/${videoId}`);
+        },
+        async pause() {
+            return xhr.put(`cast`, { command: 'pause' });
+        },
+        async resume() {
+            return xhr.put(`cast`, { command: 'resume' });
+        }
     }
 };
 
