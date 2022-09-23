@@ -1,6 +1,7 @@
 const db = require('../db').getDb();
 const fs = require('fs');
 const path = require('path');
+const mime = require('mime');
 const { cast, command } = require('../libs/chromecast');
 
 
@@ -52,7 +53,7 @@ const stream = (req, res) => {
 
     res.writeHead(206, {
         "Accept-Ranges": "bytes",
-        "Content-Type": "video/mp4",
+        "Content-Type": mime.lookup(filePath),
         "Content-Length": contentLength,
         "Content-Range": `bytes ${start}-${end}/${fileSize}`
     });
