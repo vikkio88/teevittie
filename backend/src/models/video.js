@@ -1,8 +1,8 @@
 const db = require('../db').getDb();
 const fs = require('fs');
 const path = require('path');
+const { cast, command } = require('../libs/chromecast');
 
-let castDevices = null;
 
 const getFilePathForEpisode = (id, db) => {
     const { path: filePath = null } = db.data.indexed[id] || {};
@@ -64,6 +64,7 @@ const stream = (req, res) => {
 
 const subtitles = (req, res) => {
     const { id } = req.params;
+    console.log('requested subs');
 
     //@TODO Fix this shit
     const ids = id.split('.');
@@ -93,13 +94,21 @@ const subtitles = (req, res) => {
     res.sendFile(subsFilepath);//, { headers: { 'Content-Type': 'text/vtt' } });// move to ENUMS
 };
 
-const cast = (req, res) => {
-    
-  //  const chromecast = require('chromecasts'());
+const castRequest = (urls) => (req, res) => {
+    const { id } = req.params;
 
+    const episode = db.data.indexed[id];
+    cast(episode, urls);
+    res.sendStatus(202);
+};
+
+const castCommand = (req, res) => {
+    const { body } = req;
+    command(body.command);
+    res.sendStatus(202);
 
 };
 
 
 
-module.exports = { stream, subtitles, file, cast };
+module.exports = { stream, subtitles, file, castRequest, castCommand };

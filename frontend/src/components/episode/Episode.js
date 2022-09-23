@@ -93,7 +93,7 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
                 controls onPlay={playPauseIntercept(setWatched)}
                 // this crossOrigin is here just to load the track from 3000 on dev
                 crossOrigin="anonymous"
-                >
+            >
                 <source src={`${api.streamUrl(videoId)}`} type="video/mp4" />
                 {Boolean(subs && subs.length) && subs.map((_, i) => (
                     <track
@@ -122,6 +122,12 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
                 {/* NEED TO CHECK HOW TO DO PLAY PAUSE WITHOUT TOO MUCH SET STATE */}
                 {/* <button onClick={() => togglePlay()}><I name={I.NAMES.CLOCK_ROTATE_LEFT} /></button> */}
             </div>
+
+            <small>
+                <T title="Experimental (and crap)">
+                    <Link to={`/episode-cast/${videoId}`}>Cast</Link>
+                </T>
+            </small>
 
         </div>
     );
