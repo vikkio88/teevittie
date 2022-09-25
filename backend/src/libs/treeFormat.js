@@ -19,11 +19,12 @@ const format = (tree, getId = sha1) => {
     const seasonsMap = {};
 
     const rootFolders = tree.children.filter(directories);
-    const singleFiles = tree.children.filter(files);
+    let singleFiles = tree.children.filter(files);
 
     for (const rootFolder of rootFolders) {
         const showId = getId(rootFolder.name);
         const seasonsUnformatted = (rootFolder.children && rootFolder.children.filter(directories)) || [];
+        singleFiles = [...singleFiles, ...((rootFolder.children && rootFolder.children.filter(files)) || [])];
         const hasSeasons = Boolean(seasonsUnformatted.length);
         if (!hasSeasons) continue;
 
@@ -87,6 +88,8 @@ const format = (tree, getId = sha1) => {
             id: showId, name, seasons
         });
     }
+
+    console.log(singleFiles);
 
     return { formatted, indexed, seasonsMap };
 };
