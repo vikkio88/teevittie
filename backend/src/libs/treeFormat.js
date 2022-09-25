@@ -89,7 +89,13 @@ const format = (tree, getId = sha1) => {
         });
     }
 
-    console.log(singleFiles);
+    if (singleFiles.length > 0) {
+        formatted.push({
+            id: getId(tree.name),
+            name: cleanFilename(tree.name),
+            movies: []
+        });
+    }
 
     return { formatted, indexed, seasonsMap };
 };

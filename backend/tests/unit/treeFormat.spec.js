@@ -2,11 +2,14 @@ const { test } = require('@japa/runner');
 
 const { format, TYPE } = require('../../src/libs/treeFormat');
 
+const cleanNameAsTestId = name => name.replace(/[\s\.]/g, '_', name);
+
 
 test.group('Catalog Generation', () => {
 
   test('format rejects empty folders', ({ expect }) => {
     const treeExample = {
+      name: 'moviesFolder',
       children: [
         { name: 'SomeEmptyFolder', type: 'directory', children: [] },
       ]
@@ -19,6 +22,7 @@ test.group('Catalog Generation', () => {
 
   test('format rejects empty folders but adds the one that have it', ({ expect }) => {
     const treeExample = {
+      name: 'moviesFolder',
       children: [
         { name: 'SomeEmptyFolder', type: 'directory', children: [] },
         {
@@ -44,7 +48,7 @@ test.group('Catalog Generation', () => {
         },
       ]
     };
-    const { formatted, indexed, seasonsMap } = format(treeExample, name => name.replace(/[\s\.]/g, '_', name));
+    const { formatted, indexed, seasonsMap } = format(treeExample, cleanNameAsTestId);
 
 
     expect(formatted.length).toBeGreaterThan(0);
@@ -102,6 +106,7 @@ test.group('Catalog Generation', () => {
 test.group('Catalog Subtitles Indexing', ({ expect }) => {
   test('testing whether the subtitle gets associated to the episode if it has the same filename', ({ expect }) => {
     const treeExample = {
+      name: 'moviesFolder',
       children: [
         {
           name: 'SomeShowFolder', type: TYPE.DIRECTORY, children: [
@@ -116,21 +121,21 @@ test.group('Catalog Subtitles Indexing', ({ expect }) => {
       ]
     };
 
-    const { formatted } = format(treeExample, name => name.replace(/[\s\.]/g, '_', name));
+    const { formatted } = format(treeExample, cleanNameAsTestId);
     expect(formatted.length).toBe(1);
     expect(formatted[0].seasons.length).toBe(1);
     expect(formatted[0].seasons[0].episodes.length).toBe(1);
     expect(formatted[0].seasons[0].episodes[0]).toEqual({
-      "fullId": "SomeShowFolder.Season1.Episode_1_omg_sick_mp4",
-      "id": "Episode_1_omg_sick_mp4",
-      "name": "Episode 1 omg sick",
-      "path": "some/file/path/1",
-      "season": "Season1",
-      "show": "SomeShowFolder",
-      "subs": [{
-        "name": "Episode.1_omg_sick.vtt",
-        "path": "some/file/path/1.vtt",
-        "plainName": "Episode.1_omg_sick",
+      'fullId': 'SomeShowFolder.Season1.Episode_1_omg_sick_mp4',
+      'id': 'Episode_1_omg_sick_mp4',
+      'name': 'Episode 1 omg sick',
+      'path': 'some/file/path/1',
+      'season': 'Season1',
+      'show': 'SomeShowFolder',
+      'subs': [{
+        'name': 'Episode.1_omg_sick.vtt',
+        'path': 'some/file/path/1.vtt',
+        'plainName': 'Episode.1_omg_sick',
       }]
     });
 
@@ -138,34 +143,67 @@ test.group('Catalog Subtitles Indexing', ({ expect }) => {
 });
 
 // TESTS TO COLLECT VIDEO FILES FROM OTHER DIRECTORIES TOO
-// test.group('Catalog Single Files Addition', () => {
-//   test('format rejects empty folders', ({ expect }) => {
-//     const treeExample = {
-//       children: [
-//         {
-//           name: 'SomeShowFolder', type: TYPE.DIRECTORY, children: [
-//             { name: 'ARandomVideoFileWithoutSeason.mp4', path: 'some/Rando', type: TYPE.FILE },
-//             {
-//               name: 'SomeSeasonFolder', type: TYPE.DIRECTORY, children: [
-//                 { name: 'VideoFileWithinSeason.mp4', path: 'some/season/Video', type: TYPE.FILE },
-//               ]
-//             }
-//           ]
-//         },
-//         { name: 'SomeEmptyFolder', type: TYPE.DIRECTORY, children: [] },
-//         {
-//           name: 'SomeOtherFolder', type: TYPE.DIRECTORY, children: [
-//             { name: 'AVideoInOtherF.mp4', path: 'some2/f', type: TYPE.FILE },
-//             { name: 'AVideoInOtherF2.mp4', path: 'some2/f2', type: TYPE.FILE },
-//           ]
-//         },
-//         { name: 'ARandomVideoInRoot.mp4', path: 'root/file1', type: TYPE.FILE },
-//         { name: 'ARandomVideoInRoot2.mp4', path: 'root/file2', type: TYPE.FILE },
-//       ]
-//     };
+test.group('Catalog Single Files Addition', () => {
+  test('format single files from thee of folders', ({ expect }) => {
+    const treeExample = {
+      name: 'moviesFolder',
+      children: [
+        {
+          name: 'SomeShowFolder', type: TYPE.DIRECTORY, children: [
+            { name: 'ARandomVideoFileWithoutSeason.mp4', path: 'some/Rando', type: TYPE.FILE },
+            {
+              name: 'SomeSeasonFolder', type: TYPE.DIRECTORY, children: [
+                { name: 'VideoFileWithinSeason.mp4', path: 'some/season/video', type: TYPE.FILE },
+              ]
+            }
+          ]
+        },
+        { name: 'SomeEmptyFolder', type: TYPE.DIRECTORY, children: [] },
+        {
+          name: 'SomeOtherFolder', type: TYPE.DIRECTORY, children: [
+            { name: 'AVideoInOtherF.mp4', path: 'some2/f', type: TYPE.FILE },
+            { name: 'AVideoInOtherF.vtt', path: 'some2/f.vtt', type: TYPE.FILE },
+            { name: 'AVideoInOtherF2.mp4', path: 'some2/f2', type: TYPE.FILE },
+          ]
+        },
+        { name: 'ARandomVideoInRoot.mp4', path: 'root/file1', type: TYPE.FILE },
+        { name: 'ARandomVideoInRoot2.mp4', path: 'root/file2', type: TYPE.FILE },
+        { name: 'ARandomVideoInRoot2.vtt', path: 'root/file2.vtt', type: TYPE.FILE },
+      ]
+    };
 
-//     const result = format(treeExample);
-//     expect(result.formatted).toEqual([]);
-//     expect(result.indexed).toEqual({});
-//   });
-// });
+    const result = format(treeExample, cleanNameAsTestId);
+    expect(result.formatted).toEqual([
+      {
+        id: cleanNameAsTestId('SomeShowFolder'), name: 'SomeShowFolder',
+        seasons: [
+          {
+            id: cleanNameAsTestId('SomeSeasonFolder'), name: 'SomeSeasonFolder', episodes: [
+              {
+                id: cleanNameAsTestId('VideoFileWithinSeason.mp4'), fullId: `SomeShowFolder.SomeSeasonFolder.VideoFileWithinSeason_mp4`,
+                name: 'VideoFileWithinSeason', path: 'some/season/video', season: 'SomeSeasonFolder', show: 'SomeShowFolder', subs: null,
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: cleanNameAsTestId('moviesFolder'),
+        name: 'moviesFolder',
+        movies: []
+      }
+    ]);
+    expect(result.indexed).toEqual(
+      {
+        'SomeShowFolder.SomeSeasonFolder.VideoFileWithinSeason_mp4': {
+          'fullId': 'SomeShowFolder.SomeSeasonFolder.VideoFileWithinSeason_mp4',
+          'id': 'VideoFileWithinSeason_mp4',
+          'name': 'VideoFileWithinSeason',
+          'path': 'some/season/video',
+          'season': 'SomeSeasonFolder',
+          'show': 'SomeShowFolder',
+          'subs': null,
+        }
+      });
+  });
+});
