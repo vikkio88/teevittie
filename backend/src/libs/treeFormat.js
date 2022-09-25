@@ -18,10 +18,12 @@ const format = (tree, getId = sha1) => {
     const indexed = {};
     const seasonsMap = {};
 
-    const shows = tree.children.filter(directories);
-    for (const show of shows) {
-        const showId = getId(show.name);
-        const seasonsUnformatted = (show.children && show.children.filter(directories)) || [];
+    const rootFolders = tree.children.filter(directories);
+    const singleFiles = tree.children.filter(files);
+
+    for (const rootFolder of rootFolders) {
+        const showId = getId(rootFolder.name);
+        const seasonsUnformatted = (rootFolder.children && rootFolder.children.filter(directories)) || [];
         const hasSeasons = Boolean(seasonsUnformatted.length);
         if (!hasSeasons) continue;
 
@@ -63,12 +65,12 @@ const format = (tree, getId = sha1) => {
                     subs: indexedSubs[plainName] ?? null,
                     path: episode.path,
                     // Additional info
-                    show: show.name,
+                    show: rootFolder.name,
                     season: season.name,
                 };
 
-                episodes.push(formattedEpisode);
                 indexed[fullId] = { ...formattedEpisode };
+                episodes.push(formattedEpisode);
             }
 
             seasonsMap[showId][seasonId] = episodesLinks;
@@ -79,7 +81,7 @@ const format = (tree, getId = sha1) => {
             });
         }
         if (!Boolean(seasons.length)) continue;
-        const name = show.name;
+        const name = rootFolder.name;
         // here could add other episodes if there are any in the folder itself
         formatted.push({
             id: showId, name, seasons
