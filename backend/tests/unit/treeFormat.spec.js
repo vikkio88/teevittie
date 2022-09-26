@@ -190,7 +190,26 @@ test.group('Catalog Single Files Addition', () => {
       {
         id: cleanNameAsTestId('moviesFolder'),
         name: 'moviesFolder',
-        movies: []
+        movies: [
+          {
+            id: cleanNameAsTestId('ARandomVideoFileWithoutSeason.mp4'), fullId: `moviesFolder.ARandomVideoFileWithoutSeason_mp4`,
+            name: 'ARandomVideoFileWithoutSeason', path: 'some/Rando', subs: null,
+          },
+          {
+            id: cleanNameAsTestId('ARandomVideoInRoot.mp4'), fullId: `moviesFolder.ARandomVideoInRoot_mp4`,
+            name: 'ARandomVideoInRoot', path: 'root/file1', subs: null,
+          },
+          {
+            id: cleanNameAsTestId('ARandomVideoInRoot2.mp4'), fullId: `moviesFolder.ARandomVideoInRoot2_mp4`,
+            name: 'ARandomVideoInRoot2', path: 'root/file2', subs: [
+              {
+                'name': 'ARandomVideoInRoot2.vtt',
+                'path': 'root/file2.vtt',
+                'plainName': 'ARandomVideoInRoot2',
+              }
+            ],
+          },
+        ]
       }
     ]);
     expect(result.indexed).toEqual(

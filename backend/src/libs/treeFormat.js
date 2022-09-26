@@ -13,6 +13,18 @@ const cleanFilename = filename => filename.replace(/\.[^.]*$/, '').replace(/\./g
 
 const removeExtension = filename => filename.replace(/\.[^/.]+$/, '');
 
+const formatEpisode = (episode, getId, indexedSubs = {}) => {
+    const plainName = removeExtension(episode.name);
+    const name = cleanFilename(episode.name);
+    const id = getId(episode.name);
+    return {
+        id,
+        name,
+        subs: indexedSubs[plainName] ?? null,
+        path: episode.path,
+    };
+};
+
 const format = (tree, getId = sha1) => {
     const formatted = [];
     const indexed = {};
@@ -37,20 +49,14 @@ const format = (tree, getId = sha1) => {
             const unformattedEpisodes = unformattedFilesInSeason.filter(f => !isSubtitle(f));
             const hasEpisodes = Boolean(unformattedEpisodes.length);
             if (!hasEpisodes) continue;
-            const subs = unformattedFilesInSeason.filter(isSubtitle).map(({ name, path }) => ({ name, path, plainName: removeExtension(name) }));
-            const indexedSubs = {};
-            for (const sub of subs) {
-                // atm I am only adding 1, but I will
-                // make it an array just in case I will
-                // need to add more languages
-                indexedSubs[sub.plainName] = [sub];
-            }
+            const indexedSubs = indexSubs(unformattedFilesInSeason);
             const seasonId = getId(season.name);
             const episodes = [];
             for (const episode of unformattedEpisodes) {
-                const id = getId(episode.name);
+                let formattedEpisode = formatEpisode(episode, getId, indexedSubs);
+
                 //@TODO Id for single files should break here
-                const fullId = `${showId}.${seasonId}.${id}`;
+                const fullId = `${showId}.${seasonId}.${formattedEpisode.id}`;
                 //
 
                 if (Boolean(previousEpisode)) {
@@ -58,14 +64,11 @@ const format = (tree, getId = sha1) => {
                 }
                 episodesLinks[fullId] = null;
                 previousEpisode = fullId;
-                const plainName = removeExtension(episode.name);
-                const formattedEpisode = {
-                    id,
+
+                formattedEpisode = {
+                    ...formattedEpisode,
+                    // Additional info for episode inside season
                     fullId,
-                    name: cleanFilename(episode.name),
-                    subs: indexedSubs[plainName] ?? null,
-                    path: episode.path,
-                    // Additional info
                     show: rootFolder.name,
                     season: season.name,
                 };
@@ -90,14 +93,45 @@ const format = (tree, getId = sha1) => {
     }
 
     if (singleFiles.length > 0) {
-        formatted.push({
-            id: getId(tree.name),
-            name: cleanFilename(tree.name),
-            movies: []
-        });
-    }
+        const unformattedMovies = singleFiles.filter(f => !isSubtitle(f));
+        const hasMovies = unformattedMovies.length > 0;
+        const indexedSubs = indexSubs(singleFiles);
+        const rootId = getId(tree.name);
+        const movies = [];
+        for (const unformattedMovie of unformattedMovies) {
+            let movie = formatEpisode(unformattedMovie, getId, indexedSubs);
+            const fullId = `${rootId}.${movie.id}`;
+            movie = {
+                ...movie,
+                fullId
+            };
+            movies.push(movie);
+            indexed[fullId] = { ...movie };
+        }
+
+        if (hasMovies) {
+            formatted.push({
+                id: rootId,
+                name: cleanFilename(tree.name),
+                movies
+            });
+        }
+    };
 
     return { formatted, indexed, seasonsMap };
 };
 
 module.exports = { format, TYPE };
+
+function indexSubs(files) {
+    const indexedSubs = {};
+    const subs = files.filter(isSubtitle).map(({ name, path }) => ({ name, path, plainName: removeExtension(name) }));
+    for (const sub of subs) {
+        // atm I am only adding 1, but I will
+        // make it an array just in case I will
+        // need to add more languages
+        indexedSubs[sub.plainName] = [sub];
+    }
+
+    return indexedSubs;
+}
