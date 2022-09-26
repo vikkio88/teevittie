@@ -173,7 +173,7 @@ test.group('Catalog Single Files Addition', () => {
     };
 
     const result = format(treeExample, cleanNameAsTestId);
-    expect(result.formatted).toEqual([
+    const exp = [
       {
         id: cleanNameAsTestId('SomeShowFolder'), name: 'SomeShowFolder',
         seasons: [
@@ -192,10 +192,6 @@ test.group('Catalog Single Files Addition', () => {
         name: 'moviesFolder',
         movies: [
           {
-            id: cleanNameAsTestId('ARandomVideoFileWithoutSeason.mp4'), fullId: `moviesFolder.ARandomVideoFileWithoutSeason_mp4`,
-            name: 'ARandomVideoFileWithoutSeason', path: 'some/Rando', subs: null,
-          },
-          {
             id: cleanNameAsTestId('ARandomVideoInRoot.mp4'), fullId: `moviesFolder.ARandomVideoInRoot_mp4`,
             name: 'ARandomVideoInRoot', path: 'root/file1', subs: null,
           },
@@ -203,15 +199,34 @@ test.group('Catalog Single Files Addition', () => {
             id: cleanNameAsTestId('ARandomVideoInRoot2.mp4'), fullId: `moviesFolder.ARandomVideoInRoot2_mp4`,
             name: 'ARandomVideoInRoot2', path: 'root/file2', subs: [
               {
-                'name': 'ARandomVideoInRoot2.vtt',
-                'path': 'root/file2.vtt',
-                'plainName': 'ARandomVideoInRoot2',
+                name: 'ARandomVideoInRoot2.vtt',
+                path: 'root/file2.vtt',
+                plainName: 'ARandomVideoInRoot2',
               }
             ],
           },
+          {
+            id: cleanNameAsTestId('ARandomVideoFileWithoutSeason.mp4'), fullId: `moviesFolder.ARandomVideoFileWithoutSeason_mp4`,
+            name: 'ARandomVideoFileWithoutSeason', path: 'some/Rando', subs: null,
+          },
+          {
+            id: cleanNameAsTestId('AVideoInOtherF.mp4'), fullId: `moviesFolder.AVideoInOtherF_mp4`,
+            name: 'AVideoInOtherF', path: 'some2/f', subs: [
+              {
+                name: 'AVideoInOtherF.vtt',
+                path: 'some2/f.vtt',
+                plainName: 'AVideoInOtherF',
+              }
+            ],
+          },
+          {
+            id: cleanNameAsTestId('AVideoInOtherF2.mp4'), fullId: `moviesFolder.AVideoInOtherF2_mp4`,
+            name: 'AVideoInOtherF2', path: 'some2/f2', subs: null,
+          },
         ]
       }
-    ]);
+    ];
+    expect(result.formatted).toEqual(exp);
     expect(result.indexed).toEqual(
       {
         'SomeShowFolder.SomeSeasonFolder.VideoFileWithinSeason_mp4': {
@@ -222,6 +237,53 @@ test.group('Catalog Single Files Addition', () => {
           'season': 'SomeSeasonFolder',
           'show': 'SomeShowFolder',
           'subs': null,
+        },
+        'moviesFolder.ARandomVideoInRoot_mp4': {
+          'id': 'ARandomVideoInRoot_mp4',
+          'fullId': 'moviesFolder.ARandomVideoInRoot_mp4',
+          'name': 'ARandomVideoInRoot',
+          'path': 'root/file1',
+          'subs': null
+        },
+        'moviesFolder.ARandomVideoInRoot2_mp4': {
+          'id': 'ARandomVideoInRoot2_mp4',
+          'fullId': 'moviesFolder.ARandomVideoInRoot2_mp4',
+          'name': 'ARandomVideoInRoot2',
+          'path': 'root/file2',
+          'subs': [
+            {
+              'name': 'ARandomVideoInRoot2.vtt',
+              'path': 'root/file2.vtt',
+              'plainName': 'ARandomVideoInRoot2'
+            }
+          ]
+        },
+        'moviesFolder.ARandomVideoFileWithoutSeason_mp4': {
+          'id': 'ARandomVideoFileWithoutSeason_mp4',
+          'fullId': 'moviesFolder.ARandomVideoFileWithoutSeason_mp4',
+          'name': 'ARandomVideoFileWithoutSeason',
+          'path': 'some/Rando',
+          'subs': null
+        },
+        'moviesFolder.AVideoInOtherF_mp4': {
+          'id': 'AVideoInOtherF_mp4',
+          'fullId': 'moviesFolder.AVideoInOtherF_mp4',
+          'name': 'AVideoInOtherF',
+          'path': 'some2/f',
+          'subs': [
+            {
+              'name': 'AVideoInOtherF.vtt',
+              'path': 'some2/f.vtt',
+              'plainName': 'AVideoInOtherF'
+            }
+          ]
+        },
+        'moviesFolder.AVideoInOtherF2_mp4': {
+          'id': 'AVideoInOtherF2_mp4',
+          'fullId': 'moviesFolder.AVideoInOtherF2_mp4',
+          'name': 'AVideoInOtherF2',
+          'path': 'some2/f2',
+          'subs': null
         }
       });
   });
