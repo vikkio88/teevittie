@@ -37,8 +37,45 @@ for (let i = 0; i < shows; i++) {
                 const subtitleFilePath = path.join(dir, show, season, `${episodeName}.vtt`);
                 fs.copyFileSync('scripts/example.vtt', subtitleFilePath);
             }
-
-
         }
+    }
+}
+
+const nonShowsFolders = randomInt(2, 3);
+for (let i = 0; i < nonShowsFolders; i++) {
+    const folder = `Folder${randomString()}_${i}`;
+    console.log(`adding random folder: ${folder}`);
+    fs.mkdirSync(path.join(dir, folder));
+
+    const videos = randomInt(2, 5);
+    console.log(`   generating ${videos} videos`);
+    for (let j = 0; j < videos; j++) {
+        const movieName = `SomeMovie ${randomString()} ${randomString()} ${i}${j}`;
+        const movieFileName = `${movieName}.mp4`;
+        console.log(`       generating movie: ${movieFileName}`);
+        const movieFilePath = path.join(dir, folder, movieFileName);
+        console.log('FILE:', movieFilePath);
+        fs.copyFileSync('scripts/example.mp4', movieFilePath);
+        if (randomBool()) {
+            console.log(`       -- adding subtitle to movie: ${movieFileName}`);
+            const subtitleFilePath = path.join(dir, folder, `${movieName}.vtt`);
+            fs.copyFileSync('scripts/example.vtt', subtitleFilePath);
+        }
+    }
+}
+
+const videos = randomInt(1, 5);
+console.log(`generating ${videos} videos on root`);
+for (let i = 0; i < videos; i++) {
+    const movieName = `SomeRootMovie ${randomString()} ${randomString()} ${i}`;
+    const movieFileName = `${movieName}.mp4`;
+    console.log(`       generating episode: ${movieFileName}`);
+    const movieFilePath = path.join(dir, movieFileName);
+    console.log('FILE:', movieFilePath);
+    fs.copyFileSync('scripts/example.mp4', movieFilePath);
+    if (randomBool()) {
+        console.log(`       -- adding subtitle to movie: ${movieFileName}`);
+        const subtitleFilePath = path.join(dir, `${movieName}.vtt`);
+        fs.copyFileSync('scripts/example.vtt', subtitleFilePath);
     }
 }
