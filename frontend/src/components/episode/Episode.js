@@ -107,11 +107,16 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
             </video>
             {/* NEED TO STYLE THIS BETTER */}
             <div className="bottomRow">
-                <T title={`Back to ${show}`}>
+                {Boolean(show) && <T title={`Back to ${show}`}>
                     <Link to={`/show/${showId}`}><I name={I.NAMES.LIST} /></Link>
-                </T>
-                <small>{name} ({show} - {season})</small>
+                </T>}
+                <small>{name} {`${show ? `(${show} - ${season})` : ''}`}</small>
                 <div className="controls">
+                    <small>
+                        <T title="Cast (experimental)">
+                            <Link to={`/episode-cast/${videoId}`}><I name={I.NAMES.TV} /></Link>
+                        </T>
+                    </small>
                     <T title="Reset">
                         <button onClick={() => continueWatching(0)}><I name={I.NAMES.BACK_STEP} /></button>
                     </T>
@@ -122,14 +127,7 @@ const Episode = ({ videoId, season, show, name, subs = null, next, watchedHistor
                 {/* NEED TO CHECK HOW TO DO PLAY PAUSE WITHOUT TOO MUCH SET STATE */}
                 {/* <button onClick={() => togglePlay()}><I name={I.NAMES.CLOCK_ROTATE_LEFT} /></button> */}
             </div>
-
-            <small>
-                <T title="Experimental (and crap)">
-                    <Link to={`/episode-cast/${videoId}`}>Cast</Link>
-                </T>
-            </small>
-
-        </div>
+        </div >
     );
 };
 

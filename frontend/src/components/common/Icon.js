@@ -4,7 +4,8 @@ import {
     faChevronUp, faPlay, faXmark,
     faClockRotateLeft, faBackwardStep,
     faPause, faRectangleList, faChevronRight,
-    faChevronLeft, faClosedCaptioning,
+    faChevronLeft, faClosedCaptioning, faFolderTree,
+    faTelevision
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FaIcon } from '@fortawesome/react-fontawesome';
 
@@ -21,6 +22,8 @@ const NAMES = {
     BACK_STEP: 'back_step',
     LIST: 'list',
     CC: 'cc',
+    FOLDERS: 'folders',
+    TV: 'tv',
 };
 const NAMES_MAP = {
     [NAMES.CHECK]: faCheck,
@@ -35,11 +38,13 @@ const NAMES_MAP = {
     [NAMES.BACK_STEP]: faBackwardStep,
     [NAMES.LIST]: faRectangleList,
     [NAMES.CC]: faClosedCaptioning,
+    [NAMES.FOLDERS]: faFolderTree,
+    [NAMES.TV]: faTelevision,
 
 };
 
-const Icon = ({ name }) => {
-    return <FaIcon icon={NAMES_MAP[name]} />;
+const Icon = ({ name, style = {} }) => {
+    return <FaIcon style={style} icon={NAMES_MAP[name]} />;
 };
 
 Icon.NAMES = NAMES;

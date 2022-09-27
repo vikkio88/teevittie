@@ -69,7 +69,7 @@ test.group('Api smoke tests', () => {
         }
 
         let responseStream = await client.get(`/api/subs/someRandomId`);
-        expect(responseStream.status()).toBe(400);
+        expect(responseStream.status()).toBe(404);
         responseStream = await client.get(`/api/subs/${episodeWithoutSubs.fullId}`);
         expect(responseStream.status()).toBe(404);
         responseStream = await client.get(`/api/subs/${episodeWithSubs.fullId}`);

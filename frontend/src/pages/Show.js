@@ -7,7 +7,7 @@ import { catalogHelper } from 'libs/helpers';
 
 const ShowPage = () => {
     const { id } = useParams();
-    const { app: { catalog, history } } = useStoreon('app');
+    const { dispatch, app: { catalog, history } } = useStoreon('app');
     if (!Boolean(catalog) || !Boolean(history)) return <Spinner />;
 
     const show = catalogHelper.getShowById(id, catalog);
@@ -15,7 +15,7 @@ const ShowPage = () => {
 
     return (
         <>
-            <Show {...show} />
+            <Show {...show} history={history} dispatch={dispatch} />
         </>
     );
 };
