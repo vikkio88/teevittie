@@ -7,8 +7,8 @@ export const ShowItem = ({ name, seasons, movies = null, onView }) => {
     return (
         <div className="ShowItem">
             <h4>
-                {hasStrayVideo && <I style={{ marginRight: '6px' }} name={I.NAMES.FOLDERS} />}
                 {name}
+                {hasStrayVideo && <I style={{ marginLeft: '6px' }} name={I.NAMES.FOLDERS} />}
             </h4>
             <div>
                 {!hasStrayVideo && <span>{seasonsCount} season{`${seasonsCount > 1 ? 's' : ''}`}</span>}

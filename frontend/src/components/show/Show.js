@@ -12,7 +12,7 @@ const Show = ({ id, name, seasons, movies = null, history, dispatch }) => {
                 EpisodeItem
             </h3>
 
-            {hasStrayVideo && <div className='Episodes-active'>
+            {hasStrayVideo && <div className='Movies-wrapper'>
                 {movies.map(e => <EpisodeItem key={e.id} fullId={e.id} {...e} watchedHistory={history[e.fullId]} dispatch={dispatch} highlightWatched />)}
             </div>}
             {!hasStrayVideo && <div className='Show-seasonsWrapper'>
