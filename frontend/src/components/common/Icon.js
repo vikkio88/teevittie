@@ -4,7 +4,8 @@ import {
     faChevronUp, faPlay, faXmark,
     faClockRotateLeft, faBackwardStep,
     faPause, faRectangleList, faChevronRight,
-    faChevronLeft, faClosedCaptioning, faFolderTree
+    faChevronLeft, faClosedCaptioning, faFolderTree,
+    faTelevision
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FaIcon } from '@fortawesome/react-fontawesome';
 
@@ -22,6 +23,7 @@ const NAMES = {
     LIST: 'list',
     CC: 'cc',
     FOLDERS: 'folders',
+    TV: 'tv',
 };
 const NAMES_MAP = {
     [NAMES.CHECK]: faCheck,
@@ -37,6 +39,7 @@ const NAMES_MAP = {
     [NAMES.LIST]: faRectangleList,
     [NAMES.CC]: faClosedCaptioning,
     [NAMES.FOLDERS]: faFolderTree,
+    [NAMES.TV]: faTelevision,
 
 };
 

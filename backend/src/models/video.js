@@ -65,15 +65,6 @@ const stream = (req, res) => {
 
 const subtitles = (req, res) => {
     const { id } = req.params;
-    console.log('requested subs');
-
-    //@TODO Fix this shit
-    const ids = id.split('.');
-    if (ids.length < 3) {
-        res.sendStatus(400, { message: `Invalid id: ${id}` });
-        return;
-    }
-
     const episode = db.data.indexed[id];
     if (!episode || !Boolean(episode.subs && episode.subs.length)) {
         res.sendStatus(404);
