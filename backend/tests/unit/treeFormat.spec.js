@@ -190,6 +190,7 @@ test.group('Catalog Single Files Addition', () => {
       {
         id: cleanNameAsTestId('moviesFolder'),
         name: 'moviesFolder',
+        meta: { stray: true },
         movies: [
           {
             id: cleanNameAsTestId('ARandomVideoInRoot.mp4'), fullId: `moviesFolder.ARandomVideoInRoot_mp4`,

@@ -48,6 +48,13 @@ const fromDir = directory => {
                     }
                 ]
             }
+            // or
+            {
+                id,
+                name,
+                meta: { stray: true }, // this indicates that is a collection of stray files
+                movies: [ { same as episode -(show,season)}]
+            }
          ]
 
          // indexed

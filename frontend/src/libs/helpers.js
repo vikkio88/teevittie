@@ -7,6 +7,7 @@ const catalogHelper = {
         }
 
         // HERE I NEED TO ADD A WAY TO GET THE OTHERs FOLDER
+        
 
         return null;
     },

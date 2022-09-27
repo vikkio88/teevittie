@@ -112,6 +112,7 @@ const format = (tree, getId = sha1) => {
         if (hasMovies) {
             formatted.push({
                 id: rootId,
+                meta: { stray: true },
                 name: cleanFilename(tree.name),
                 movies
             });
