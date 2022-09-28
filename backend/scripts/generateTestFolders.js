@@ -79,3 +79,8 @@ for (let i = 0; i < videos; i++) {
         fs.copyFileSync('scripts/example.vtt', subtitleFilePath);
     }
 }
+
+if (fs.existsSync('scripts/example.mkv')) {
+    console.log(`adding mkv video on root`);
+    fs.copyFileSync('scripts/example.mkv', path.join(dir, `SomeMKVfile.mkv`));
+}

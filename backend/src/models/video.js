@@ -1,5 +1,7 @@
 const db = require('../db').getDb();
 const fs = require('fs');
+const which = require('which');
+const Transcoder = require('stream-transcoder');
 const path = require('path');
 const mime = require('mime-types');
 const { cast, command } = require('../libs/chromecast');
@@ -13,7 +15,6 @@ const getFilePathForEpisode = (id, db) => {
 const file = (req, res) => {
     const { id } = req.params;
     const filePath = getFilePathForEpisode(id, db);
-    console.log('REQUESTED FILE', { id, head: req.headers });
 
     if (!fs.existsSync(filePath)) {
         return res.status(404).json({
@@ -22,7 +23,38 @@ const file = (req, res) => {
         });
     }
 
-    res.sendFile(path.join(process.cwd(), filePath));
+    const mimeType = mime.lookup(filePath);
+
+    const completeFilePath = path.join(process.cwd(), filePath);
+    let hasffmpeg = true;
+    try {
+        hasffmpeg = Boolean(which.sync('ffmpeg'));
+    } catch {
+        hasffmpeg = false;
+    }
+
+    if (mimeType.includes('mp4') || !hasffmpeg) {
+        res.sendFile(completeFilePath);
+        return;
+    }
+
+    const trans = new Transcoder(completeFilePath)
+        .videoCodec('h264')
+        .format('mp4')
+        .custom('strict', 'experimental')
+        .on('finish', () => {
+            console.log('finished transcoding');
+            res.end();
+        })
+        .on('error', err => {
+            console.log('error transcoding', err);
+            res.end();
+        });
+
+    let args = trans._compileArguments();
+    args = ['-i', '-'].concat(args);
+    args.push('pipe:1');
+    trans.stream().pipe(res);
 };
 
 const stream = (req, res) => {
