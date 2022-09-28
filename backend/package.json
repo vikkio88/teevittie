@@ -32,7 +32,9 @@
     "mime-types": "^2.1.35",
     "open": "^8.4.0",
     "socket.io": "^4.5.2",
+    "stream-transcoder": "^0.0.5",
     "tiny-hashes": "^1.0.1",
+    "which": "^2.0.2",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
