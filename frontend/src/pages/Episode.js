@@ -17,9 +17,9 @@ const EpisodePage = () => {
 
     return <Episode
         {...{ season, show, name, subs }}
+        next={isStandalone ? null : seasonsMap[ids[0]][ids[1]][id]}
         videoId={id}
         watchedHistory={history.watched || {}}
-        next={isStandalone ? null : seasonsMap[ids[0]][ids[1]][id]}
     />;
 };
 

@@ -12,12 +12,14 @@ const EpisodeCastPage = () => {
 
     if (!history || !catalog) return <Spinner />;
     const { season, show, name, subs = null } = catalogHelper.getEpisodeById(id, catalog);
+    const isStandalone = ids.length < 3;
+
 
     return <CastEpisode
         {...{ season, show, name, subs }}
         videoId={id}
         watchedHistory={history.watched || {}}
-        next={seasonsMap[ids[0]][ids[1]][id]}
+        next={isStandalone ? null : seasonsMap[ids[0]][ids[1]][id]}
     />;
 };
 
