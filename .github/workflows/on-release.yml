@@ -39,6 +39,14 @@ jobs:
       run: npx pkg .
       working-directory: backend
     
+    - name: Zip builds
+      run: |
+        VERSION=`git rev-parse --short HEAD`
+        cd dist
+        zip -r teevittie-linux-$VERSION.zip teevittie-linux
+        zip -r teevittie-macos-$VERSION.zip teevittie-macos
+        zip -r teevittie-win-$VERSION.zip teevittie-win.exe
+      working-directory: backend
     - name: Check if they are there
       run: ls dist
       working-directory: backend
