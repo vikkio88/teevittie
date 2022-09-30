@@ -1,11 +1,8 @@
 name: On Release Published
 
-# on:
-#   release:
-#     types: [published]
 on:
-  push:
-    branches-ignores: main
+  release:
+    types: [published]
 
 jobs:
   pkg-binaries:
@@ -41,12 +38,26 @@ jobs:
     
     - name: Zip builds
       run: |
-        VERSION=`git rev-parse --short HEAD`
         cd dist
-        zip -r teevittie-linux-$VERSION.zip teevittie-linux
-        zip -r teevittie-macos-$VERSION.zip teevittie-macos
-        zip -r teevittie-win-$VERSION.zip teevittie-win.exe
+        zip -r teevittie-linux.zip teevittie-linux
+        zip -r teevittie-macos.zip teevittie-macos
+        zip -r teevittie-win.zip teevittie-win.exe
       working-directory: backend
-    - name: Check if they are there
-      run: ls dist
-      working-directory: backend
+
+    - name: Upload Linux Bin
+      uses: djn24/add-asset-to-release@v1
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        path: 'backend/dist/teevittie-linux.zip'
+
+    - name: Upload MacOS Bin
+      uses: djn24/add-asset-to-release@v1
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        path: 'backend/dist/teevittie-macos.zip'
+
+    - name: Upload Win Bin
+      uses: djn24/add-asset-to-release@v1
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        path: 'backend/dist/teevittie-win.zip'
