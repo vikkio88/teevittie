@@ -1,0 +1,44 @@
+name: On Release Published
+
+# on:
+#   release:
+#     types: [published]
+on:
+  push:
+    branches-ignores: main
+
+jobs:
+  pkg-binaries:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+  
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+ 
+    - name: Use Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.17.0'
+
+    - name: Installing root deps
+      run: npm ci
+
+    - name: Installing backend deps
+      run: npm ci
+      working-directory: backend
+
+    - name: Installing frontend deps
+      run: npm ci
+      working-directory: frontend
+
+    - name: Building FE bundle
+      run: npm run build
+    
+    - name: Bulding pkg
+      run: npx pkg .
+      working-directory: backend
+    
+    - name: Check if they are there
+      run: ls dist
+      working-directory: backend
