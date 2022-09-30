@@ -66,5 +66,7 @@ jobs:
     #     path: 'backend/dist/teevittie-win.zip'
     
     - name: Build for ARMV7L
-      run: |
-        docker run --rm balenalib/raspberrypi3-alpine-node:16.17.0-3.15 uname -m
+      uses: pguyot/arm-runner-action@v2
+      with:
+        commands: |
+          uname -m
