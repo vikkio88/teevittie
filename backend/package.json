@@ -47,7 +47,10 @@
     "wait-on": "^6.0.1"
   },
   "pkg": {
-    "assets": "build/**/*",
+    "assets": [
+      "build/**/*",
+      "node_modules/castv2/lib/cast_channel.proto"
+    ],
     "outputPath": "dist"
   }
 }
