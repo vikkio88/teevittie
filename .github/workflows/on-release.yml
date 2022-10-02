@@ -42,6 +42,7 @@ jobs:
         zip -r teevittie-linux.zip teevittie-linux
         zip -r teevittie-macos.zip teevittie-macos
         zip -r teevittie-win.zip teevittie-win.exe
+      working-directory: backend
 
     - name: Upload Linux Bin
       uses: djn24/add-asset-to-release@v1
