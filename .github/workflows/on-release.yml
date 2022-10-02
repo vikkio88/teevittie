@@ -42,6 +42,8 @@ jobs:
         zip -r teevittie-linux.zip teevittie-linux
         zip -r teevittie-macos.zip teevittie-macos
         zip -r teevittie-win.zip teevittie-win.exe
+        rm -rf backend/node_modules backend/bin backend/tests nodemon.json tmp dist scripts
+        zip -r teevittie-source.zip backend/*
       working-directory: backend
 
     - name: Upload Linux Bin
